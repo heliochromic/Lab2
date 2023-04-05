@@ -23,11 +23,17 @@ public class Program extends JFrame implements ActionListener {
 
     public Program() {
         setName("vidrah?");
-        setSize(800, 600);
+        setSize(1000, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         init();
         setVisible(true);
+    }
+
+    private static JLabel createLabel(String text, int width) {
+        JLabel label = new JLabel(text);
+        label.setPreferredSize(new Dimension(width, 30));
+        return label;
     }
 
     private void init() {
@@ -38,13 +44,14 @@ public class Program extends JFrame implements ActionListener {
         tabbedPane = new JTabbedPane();
         createTab("candies");
         createTab("diary");
-        for (JPanel i : items_list){
-            tabbedPane.addTab("wow",i);
-        }
+
+        tabbedPane.addTab("group 1", items_list.get(0));
+        tabbedPane.addTab("group 2", items_list.get(1));
+
 
         //
         scrollPanel = new JPanel();
-        scrollPanel.setPreferredSize(new Dimension((int) (this.getWidth() * 0.7), this.getHeight()));
+        scrollPanel.setPreferredSize(new Dimension((int) (this.getWidth() * 0.8), this.getHeight()));
 
         scrollPanel.add(tabbedPane);
 
@@ -81,10 +88,10 @@ public class Program extends JFrame implements ActionListener {
         layout = new GridBagLayout();
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.BOTH;
-        constraints.weightx = 0.7;
+        constraints.weightx = 0.8;
         constraints.insets = new Insets(0, 0, 0, 0);
         layout.setConstraints(scrollPanel, constraints);
-        constraints.weightx = 0.3;
+        constraints.weightx = 0.2;
         layout.setConstraints(buttonPanel, constraints);
 
         backgroundPanel = new JPanel(layout);
@@ -105,7 +112,7 @@ public class Program extends JFrame implements ActionListener {
     public void createTab(String name) {
         String filename = "";
         try {
-            filename = name + ".txt";
+            filename = name + ".ser";
             File f = new File(filename);
             if (f.createNewFile()) System.out.println("New " + filename + " was created");
             else System.out.println("File already exists.");
@@ -116,20 +123,65 @@ public class Program extends JFrame implements ActionListener {
         items_list.add(createScrollableTable(filename));
     }
 
-    public JPanel createScrollableTable(String filename){
-        String[] columnNames = {"id","item","amount","buy","edit","delete"};
-        //тут треба, щоб з файлу діставалися продукти і закидувалися в таблицю
-        Object[][] rowData = {
-                {1,"Ketchup",10,new JButton("✔"),new JButton("✖"), new JButton("✍️")},
-                {2,"Ketchup",10,new JButton("✔"),new JButton("✖"), new JButton("✍️")},
-                {3,"Ketchup",10,new JButton("✔"),new JButton("✖"), new JButton("✍️")},
-                {4,"Ketchup",10,new JButton("✔"),new JButton("✖"), new JButton("✍️")}
+    public JPanel createScrollableTable(String filename) {
+        JPanel headerRow = new JPanel(new GridLayout(1, 5));
+        JPanel div = new JPanel(new GridLayout(0, 1));
+        headerRow.setPreferredSize(new Dimension(div.getWidth(), 50));
+        headerRow.add(createLabel("ID", 10));
+        headerRow.add(createLabel("Item Name", 60));
+        headerRow.add(createLabel("Amount", 10));
+        headerRow.add(createLabel("Price", 30));
+        headerRow.add(new JPanel()); // placeholder for buttons
+
+        div.add(headerRow, BorderLayout.NORTH);
+
+        Item[] items = {
+                new Item("Item 1", 5, 1000),
+                new Item("Item 2", 3, 850),
+                new Item("Item 3", 2, 500),
+                new Item("Item 4", 1, 299),
+                new Item("Item 5", 10, 2000),
+                new Item("Item 1", 5, 1000),
+                new Item("Item 2", 3, 850),
+                new Item("Item 3", 2, 500),
+                new Item("Item 4", 1, 299),
+                new Item("Item 5", 10, 2000),
+                new Item("Item 1", 5, 1000),
+                new Item("Item 2", 3, 850),
+                new Item("Item 3", 2, 500),
+                new Item("Item 4", 1, 299),
+                new Item("Item 5", 10, 2000)
         };
-        //Подивитися як закидуватися в таблицю кнопки чи переробити це все з GridBagLayout
-        //
-        DefaultTableModel model = new DefaultTableModel(rowData, columnNames);
-        JTable table = new JTable(model);
-        JScrollPane scrollPane = new JScrollPane(table);
+
+        for (int i = 0; i < items.length; i++) {
+            Item item = items[i];
+            JPanel row = new JPanel(new GridLayout(1, 5));
+            row.setPreferredSize(new Dimension(div.getWidth(), 20));
+            row.add(createLabel(String.valueOf(i + 1), 10)); // ID column
+            row.add(createLabel(item.getName(), 60)); // Item Name column
+            row.add(createLabel(String.valueOf(item.getAmount()), 10)); // Amount column
+            row.add(createLabel("$" + String.valueOf(item.getPrice() / 100) + "." + String.valueOf(item.getPrice() % 100), 30)); // Price column
+
+            // create the buttons column
+            JPanel itemButtonsPanel = new JPanel(new GridLayout(1, 3));
+            JButton buyButton = buttonNormalization(new JButton("+"));
+            buyButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+            JButton editButton = buttonNormalization(new JButton("e"));
+            editButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+            JButton deleteButton = buttonNormalization(new JButton("x"));
+            deleteButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+            itemButtonsPanel.add(buyButton);
+            itemButtonsPanel.add(editButton);
+            itemButtonsPanel.add(deleteButton);
+            row.add(itemButtonsPanel);
+
+            // add the row to the panel
+            div.add(row);
+        }
+
+
+        JScrollPane scrollPane = new JScrollPane(div);
+        scrollPane.setPreferredSize(new Dimension(790, 670));
         JPanel p = new JPanel();
         p.add(scrollPane);
         return p;
@@ -145,6 +197,7 @@ public class Program extends JFrame implements ActionListener {
             System.out.println("damn");
             e.printStackTrace();
         }
+
     }
 
     //public void getItemsFromFile(String filename)

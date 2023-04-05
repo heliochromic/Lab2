@@ -2,13 +2,13 @@ import javax.swing.*;
 
 public class Item {
     private static int id = 0;
-    private int startAmount;
+    private int amount, price;
     private String name;
-    private JButton delete, edit;
-    Item (String name, JButton delete, JButton edit){
+
+    Item(String name, int amount, int price) {
         this.name = name;
-        this.delete = delete;
-        this.edit = edit;
+        this.amount = amount;
+        this.price = price;
         id++;
     }
 
@@ -16,27 +16,15 @@ public class Item {
         return id;
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
     public String getName() {
         return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public JButton getDelete() {
-        return delete;
-    }
-
-    public void setDelete(JButton delete) {
-        this.delete = delete;
-    }
-
-    public JButton getEdit() {
-        return edit;
-    }
-
-    public void setEdit(JButton edit) {
-        this.edit = edit;
     }
 }
