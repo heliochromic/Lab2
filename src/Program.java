@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,8 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-
-import static java.lang.reflect.Array.getLength;
 
 public class Program extends JFrame implements ActionListener {
 
@@ -135,44 +132,48 @@ public class Program extends JFrame implements ActionListener {
 
         div.add(headerRow, BorderLayout.NORTH);
 
+
+        //тут не має бути ліста, тут має бути діставання об'єкту з файлу
         Item[] items = {
-                new Item("Item 1", 5, 1000),
-                new Item("Item 2", 3, 850),
-                new Item("Item 3", 2, 500),
-                new Item("Item 4", 1, 299),
-                new Item("Item 5", 10, 2000),
-                new Item("Item 1", 5, 1000),
-                new Item("Item 2", 3, 850),
-                new Item("Item 3", 2, 500),
-                new Item("Item 4", 1, 299),
-                new Item("Item 5", 10, 2000),
-                new Item("Item 1", 5, 1000),
-                new Item("Item 2", 3, 850),
-                new Item("Item 3", 2, 500),
-                new Item("Item 4", 1, 299),
-                new Item("Item 5", 10, 2000)
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
+                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20"))
         };
 
         for (int i = 0; i < items.length; i++) {
             Item item = items[i];
             JPanel row = new JPanel(new GridLayout(1, 5));
-            row.setPreferredSize(new Dimension(div.getWidth(), 20));
-            row.add(createLabel(String.valueOf(i + 1), 10)); // ID column
-            row.add(createLabel(item.getName(), 60)); // Item Name column
-            row.add(createLabel(String.valueOf(item.getAmount()), 10)); // Amount column
-            row.add(createLabel("$" + String.valueOf(item.getPrice() / 100) + "." + String.valueOf(item.getPrice() % 100), 30)); // Price column
 
-            // create the buttons column
+            row.add(createLabel(String.valueOf(i + 1), 10));
+            row.add(item.getName()).setPreferredSize(new Dimension(60, 30));
+            row.add(item.getAmount()).setPreferredSize(new Dimension(10, 30));
+            row.add(item.getPrice()).setPreferredSize(new Dimension(100, 30));
+
             JPanel itemButtonsPanel = new JPanel(new GridLayout(1, 3));
-            JButton buyButton = buttonNormalization(new JButton("+"));
-            buyButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-            JButton editButton = buttonNormalization(new JButton("e"));
-            editButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-            JButton deleteButton = buttonNormalization(new JButton("x"));
-            deleteButton.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-            itemButtonsPanel.add(buyButton);
-            itemButtonsPanel.add(editButton);
-            itemButtonsPanel.add(deleteButton);
+            item.setBuy(buttonNormalization(new JButton("+")));
+            item.getBuy().addActionListener(this);
+            item.setEdit(buttonNormalization(new JButton("e")));
+            item.getEdit().addActionListener(this);
+            item.setDelete(buttonNormalization(new JButton("-")));
+            item.getDelete().addActionListener(this);
+            itemButtonsPanel.add(item.getBuy());
+            itemButtonsPanel.add(item.getEdit());
+            itemButtonsPanel.add(item.getDelete());
             row.add(itemButtonsPanel);
 
             // add the row to the panel
@@ -200,12 +201,6 @@ public class Program extends JFrame implements ActionListener {
 
     }
 
-    //public void getItemsFromFile(String filename)
-    //тут треба буде отримувати item по стрінгу idk, я вже попаяний розуміти цей код,
-    // як на цій залупі можна було model comp це йобана таємниця всесвітнього масштабу
-    //от хочеться просто людського написати це і забути, бо просто придумуєш собі ідею, а потім хочеш відкинутися в намаганнях її реалізуватию
-
-
     /**
      * Invoked when an action occurs.
      *
@@ -213,6 +208,7 @@ public class Program extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        System.out.println(e.getSource());
+        System.out.println(e.getActionCommand());
     }
 }

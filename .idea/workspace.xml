@@ -5,6 +5,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Item.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Window.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Window.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +20,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="ira" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RESET_MODE" value="MIXED" />
   </component>
@@ -36,6 +42,8 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/code/code_wow/2 trimester/main/Lab2_&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
 }</component>
@@ -49,7 +57,18 @@
       <updated>1680589367016</updated>
       <workItem from="1680589369344" duration="17852000" />
       <workItem from="1680621743582" duration="11526000" />
-      <workItem from="1680685520268" duration="6836000" />
+      <workItem from="1680685520268" duration="9233000" />
+      <workItem from="1680771736269" duration="27000" />
+      <workItem from="1680773103557" duration="634000" />
+      <workItem from="1680788100699" duration="1627000" />
+      <workItem from="1680792655368" duration="8000" />
+      <workItem from="1680797730649" duration="54000" />
+      <workItem from="1680874356566" duration="1598000" />
+      <workItem from="1680900674326" duration="569000" />
+      <workItem from="1681312141558" duration="3275000" />
+      <workItem from="1681379165117" duration="2611000" />
+      <workItem from="1681381982690" duration="545000" />
+      <workItem from="1681389746427" duration="4730000" />
     </task>
     <servers />
   </component>
