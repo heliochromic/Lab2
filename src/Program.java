@@ -124,60 +124,26 @@ public class Program extends JFrame implements ActionListener {
         JPanel headerRow = new JPanel(new GridLayout(1, 5));
         JPanel div = new JPanel(new GridLayout(0, 1));
         headerRow.setPreferredSize(new Dimension(div.getWidth(), 50));
-        headerRow.add(createLabel("ID", 10));
+        //headerRow.add(createLabel("ID", 10));
         headerRow.add(createLabel("Item Name", 60));
         headerRow.add(createLabel("Amount", 10));
         headerRow.add(createLabel("Price", 30));
-        headerRow.add(new JPanel()); // placeholder for buttons
+        headerRow.add(new JPanel());
+        headerRow.add(new JPanel());// placeholder for buttons
 
         div.add(headerRow, BorderLayout.NORTH);
 
 
         //тут не має бути ліста, тут має бути діставання об'єкту з файлу
         Item[] items = {
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20")),
-                new Item(new JLabel("item 1"), new JLabel("10"), new JLabel("$20"))
+               new Item("Baton", 10, 25),
+                new Item("Chocolate bar", 25, 70),
+                new Item("Milk", 10, 40)
         };
 
-        for (int i = 0; i < items.length; i++) {
-            Item item = items[i];
-            JPanel row = new JPanel(new GridLayout(1, 5));
-
-            row.add(createLabel(String.valueOf(i + 1), 10));
-            row.add(item.getName()).setPreferredSize(new Dimension(60, 30));
-            row.add(item.getAmount()).setPreferredSize(new Dimension(10, 30));
-            row.add(item.getPrice()).setPreferredSize(new Dimension(100, 30));
-
-            JPanel itemButtonsPanel = new JPanel(new GridLayout(1, 3));
-            item.setBuy(buttonNormalization(new JButton("+")));
-            item.getBuy().addActionListener(this);
-            item.setEdit(buttonNormalization(new JButton("e")));
-            item.getEdit().addActionListener(this);
-            item.setDelete(buttonNormalization(new JButton("-")));
-            item.getDelete().addActionListener(this);
-            itemButtonsPanel.add(item.getBuy());
-            itemButtonsPanel.add(item.getEdit());
-            itemButtonsPanel.add(item.getDelete());
-            row.add(itemButtonsPanel);
-
-            // add the row to the panel
-            div.add(row);
+        for (Item item : items) {
+            //Item item = items[i];
+            div.add(item.getPanel());
         }
 
 
@@ -208,7 +174,6 @@ public class Program extends JFrame implements ActionListener {
      */
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getSource());
-        System.out.println(e.getActionCommand());
+
     }
 }

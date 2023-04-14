@@ -1,58 +1,70 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Item {
     private static int id = 0;
     private JButton buy, edit, delete;
-    private JLabel name, amount, price;
+    private JLabel nameL;
+    private JLabel amountL;
+    private JLabel priceL;
+    private String name;
+    private final int price;
+    JPanel panel;
+    private int amount;
 
-    Item(JLabel name, JLabel amount, JLabel price) {
+    Item(String name, int amount, int price) {
         this.name = name;
         this.amount = amount;
         this.price = price;
         id++;
+
+        panel = new JPanel(new GridLayout(1,6));
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+
+        nameL = new JLabel(name);
+        amountL = new JLabel(String.valueOf(amount));
+        priceL = new JLabel(String.valueOf(price));
+        buy = new JButton("add");
+        edit = new JButton("edit");
+        delete = new JButton("delete");
+        buy.addActionListener(this::buyActionPerformed);
+
+        edit.addActionListener(this::editActionPerformed);
+
+        delete.addActionListener(this::deleteActionPerformed);
+        panel.add(nameL);
+        panel.add(amountL);
+        panel.add(priceL);
+        panel.add(buy);
+        panel.add(edit);
+        panel.add(delete);
     }
 
-    public static int getId() {
-        return id;
+    public JPanel getPanel() {
+        return panel;
     }
 
-    public JLabel getName() {
-        return name;
+    // Separate methods for each action
+    private void buyActionPerformed(ActionEvent e) {
+        this.amount++;
+        this.amountL.setText(String.valueOf(amount));
+        System.out.println("buy");
+        panel.getParent().repaint(); // Force a repaint of the parent container
     }
 
-    public JLabel getAmount() {
-        return amount;
+    private void editActionPerformed(ActionEvent e) {
+        this.amount+=2;
+        this.amountL.setText(String.valueOf(amount));
+        System.out.println("edit");
+        panel.getParent().repaint(); // Force a repaint of the parent container
     }
 
-    public JLabel getPrice() {
-        return price;
-    }
-
-    public JButton getBuy() {
-        return buy;
-    }
-
-    public void setBuy(JButton buy) {
-        buy.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-        this.buy = buy;
-    }
-
-    public JButton getEdit() {
-        return edit;
-    }
-
-    public void setEdit(JButton edit) {
-        edit.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-        this.edit = edit;
-    }
-
-    public JButton getDelete() {
-        return delete;
-    }
-
-    public void setDelete(JButton delete) {
-        delete.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
-        this.delete = delete;
+    private void deleteActionPerformed(ActionEvent e) {
+        this.amount--;
+        this.amountL.setText(String.valueOf(amount));
+        System.out.println("delete");
+        panel.getParent().repaint();
     }
 }
