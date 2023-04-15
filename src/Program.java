@@ -1,11 +1,18 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.TreeSet;
+
 
 public class Program extends JFrame {
 
@@ -32,20 +39,56 @@ public class Program extends JFrame {
         return label;
     }
 
+    public static Item[] JSONToArray(String fileName) {
+
+        JSONParser jsonParser = new JSONParser();
+        try (FileReader reader = new FileReader(fileName)) {
+            //Read JSON file
+            var obj = jsonParser.parse(reader);
+
+            if (obj != null) {
+                JSONArray employeeList = (JSONArray) obj;
+                System.out.println(employeeList.size());
+                System.out.println(employeeList);
+            }
+            ArrayList<Item> tempItems = new ArrayList<>();
+            //Iterate over employee array
+            /*employeeList.forEach(emp -> {
+                return tempItems.add(parseEmployeeObject((JSONObject) emp));
+            });*/
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
+    private static Item parseEmployeeObject(JSONObject employee, int index) {
+        //Get employee object within list
+        JSONObject itemObj = (JSONObject) employee.get(String.valueOf(index));
+
+        //Get employee first name
+        //String firstName = (String) employeeObject.get("firstName");
+        return new Item((String) itemObj.get("name"), (int) itemObj.get("amount"), (double) itemObj.get("price"));
+    }
+
     private void init() {
 
-
-        //тут все норм
-
         tabbedPane = new JTabbedPane();
-        createTab("candies");
-        createTab("dary");
-
-        tabbedPane.addTab("group 1", items_list.get(0));
-        tabbedPane.addTab("group 2", items_list.get(1));
-
-
-        //
+        Set<String> tabs = new TreeSet<>();
+        tabs.add("Candies");
+        tabs.add("Diary");
+        tabs.add("Baking");
+        tabs.add("Hygiene");
+        int mda = 0;
+        for (String tab : tabs) {
+            createTab(tab);
+            tabbedPane.add(tab, items_list.get(mda));
+            mda++;
+        }
+        //JSONToArray(".\\item_groups\\Baking.json");
         scrollPanel = new JPanel();
         scrollPanel.setPreferredSize(new Dimension((int) (this.getWidth() * 0.88), this.getHeight()));
 
@@ -124,16 +167,20 @@ public class Program extends JFrame {
 
         div.add(headerRow, BorderLayout.NORTH);
 
-        //тут не має бути ліста, тут має бути діставання об'єкту з файлу
-        Item[] items = {
+
+        /*Item[] items = {
                 new Item("Baton", 10, 25),
                 new Item("Chocolate bar", 25, 70),
                 new Item("Milk", 10, 40),
-        };
+        };*/
 
-        for (Item item : items) {
-            div.add(item.getPanel());
-        }
+
+
+        /*if (items != null){
+            for (Item item : items) {
+                div.add(item.getPanel());
+            }
+        }*/
 
 
         JScrollPane scrollPane = new JScrollPane(div);
@@ -143,17 +190,14 @@ public class Program extends JFrame {
         return p;
     }
 
-
     private void addItemActionPerformed(ActionEvent e) {
         JFrame newFrame = new JFrame();
         newFrame.setTitle("New Frame");
         newFrame.setSize(300, 180);
         newFrame.setResizable(false);
 
-        // Set the layout manager for the new frame's content pane to GridLayout
-        newFrame.setLayout(new GridLayout(4, 2, 10, 10)); // 4 rows, 2 columns, with 10 pixels gap
+        newFrame.setLayout(new GridLayout(4, 2, 10, 10));
 
-        // Add labels and text fields for item name, amount, and price
         JLabel lblItemName = new JLabel("Item Name:");
         JTextField txtItemName = new JTextField();
         newFrame.add(lblItemName);
@@ -170,8 +214,6 @@ public class Program extends JFrame {
         newFrame.add(txtPrice);
 
         newFrame.add(new JLabel());
-
-        // Add a button to submit the form
         JButton btnSave = new JButton("Save");
         Styles.tabsButtonNormalization(btnSave);
         btnSave.addActionListener(e1 -> {
@@ -182,15 +224,15 @@ public class Program extends JFrame {
             if (files != null) {
                 File file = files[tabbedPane.getSelectedIndex()];
                 Item tempItem = new Item(itemName, Integer.parseInt(amount), Double.parseDouble(price));
-                tempItem.writeObjectToFile(file.getAbsolutePath());
+                tempItem.addItemIntoJSON(file.getAbsolutePath());
             }
-
             newFrame.dispose();
+            if (new File(".\\item_groups\\Baking.json").length() > 0) {
+                JSONToArray(".\\item_groups\\Baking.json");
+            }
         });
         newFrame.add(btnSave);
-
-        // Set the visibility of the new frame to true
         newFrame.setVisible(true);
-
     }
+
 }

@@ -1,24 +1,27 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.text.DecimalFormat;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.regex.Pattern;
 
 public class Item {
     private static int id = 0;
     JPanel panel, buttonPanel;
-    DecimalFormat df = new DecimalFormat("#.##");
     private JButton buy, edit, delete;
     private JLabel nameL;
     private JLabel amountL;
     private JLabel priceL;
-    private String name;
-    private int amount;
-    private double price;
+    String name;
+    int amount;
+    double price;
 
     Item(String name, int amount, double price) {
         this.name = name;
@@ -123,16 +126,47 @@ public class Item {
             }
         }
     }
-    public void writeObjectToFile(String filename) {
+    public void addItemIntoJSON(String fileName){
+        JSONParser jsonParser = new JSONParser();
+
         try {
-            FileOutputStream fos = new FileOutputStream(filename, true);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(this);
-            oos.close();
-            fos.close();
-            System.out.println("Object has been written to file: " + filename);
-        } catch (IOException e) {
-            System.out.println("Failed to write object to file: " + filename);
+            File file = new File(fileName);
+            if (file.length() == 0) {
+                // If file is empty, create a new JSONArray
+                JSONObject itemId = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                JSONObject item = new JSONObject();
+                itemId.put("item_name",this.name);
+                itemId.put("amount", this.amount);
+                itemId.put("price",this.price);
+                item.put(String.valueOf(id),itemId);
+                jsonArray.add(item);
+
+                FileWriter fileWriter = new FileWriter(fileName);
+                fileWriter.write(JSONValue.toJSONString(jsonArray)); // Pretty print JSON
+                fileWriter.flush();
+                fileWriter.close();
+            } else {
+                // If file is not empty, parse the existing JSONArray
+                var obj = jsonParser.parse(new FileReader(fileName));
+                JSONObject itemId = new JSONObject();
+                JSONArray jsonArray = (JSONArray) obj;
+
+
+                JSONObject item = new JSONObject();
+                itemId.put("item_name",this.name);
+                itemId.put("amount", this.amount);
+                itemId.put("price",this.price);
+
+                item.put(String.valueOf(id),itemId);
+                jsonArray.add(item);
+
+                FileWriter fileWriter = new FileWriter(fileName);
+                fileWriter.write(JSONValue.toJSONString(jsonArray)); // Pretty print JSON
+                fileWriter.flush();
+                fileWriter.close();
+            }
+        } catch (ParseException | IOException e){
             e.printStackTrace();
         }
     }
@@ -140,4 +174,17 @@ public class Item {
     public boolean isNumber(String input) {
         return Pattern.compile("^\\d+(.\\d{1,2})?$").matcher(input).matches();
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public double getPrice() {
+        return price;
+    }
 }
+
