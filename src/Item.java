@@ -1,27 +1,27 @@
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
 public class Item {
     private static int id = 0;
     JPanel panel, buttonPanel;
+    String name;
+    int amount;
+    double price;
     private JButton buy, edit, delete;
     private JLabel nameL;
     private JLabel amountL;
     private JLabel priceL;
-    String name;
-    int amount;
-    double price;
 
     Item(String name, int amount, double price) {
         this.name = name;
@@ -126,9 +126,8 @@ public class Item {
             }
         }
     }
-    public void addItemIntoJSON(String fileName){
-        JSONParser jsonParser = new JSONParser();
 
+    public void addItemIntoJSON(String fileName) {
         try {
             File file = new File(fileName);
             if (file.length() == 0) {
@@ -136,37 +135,37 @@ public class Item {
                 JSONObject itemId = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
                 JSONObject item = new JSONObject();
-                itemId.put("item_name",this.name);
+                itemId.put("item_name", this.name);
                 itemId.put("amount", this.amount);
-                itemId.put("price",this.price);
-                item.put(String.valueOf(id),itemId);
-                jsonArray.add(item);
+                itemId.put("price", this.price);
+                item.put(String.valueOf(id), itemId);
+                jsonArray.put(item);
 
                 FileWriter fileWriter = new FileWriter(fileName);
-                fileWriter.write(JSONValue.toJSONString(jsonArray)); // Pretty print JSON
+                fileWriter.write(jsonArray.toString(4)); // Pretty print JSON
                 fileWriter.flush();
                 fileWriter.close();
             } else {
                 // If file is not empty, parse the existing JSONArray
-                var obj = jsonParser.parse(new FileReader(fileName));
+                FileReader fileReader = new FileReader(fileName);
+                JSONTokener jsonTokener = new JSONTokener(fileReader);
+                JSONArray jsonArray = new JSONArray(jsonTokener);
+
                 JSONObject itemId = new JSONObject();
-                JSONArray jsonArray = (JSONArray) obj;
-
-
                 JSONObject item = new JSONObject();
-                itemId.put("item_name",this.name);
+                itemId.put("item_name", this.name);
                 itemId.put("amount", this.amount);
-                itemId.put("price",this.price);
+                itemId.put("price", this.price);
 
-                item.put(String.valueOf(id),itemId);
-                jsonArray.add(item);
+                item.put(String.valueOf(id), itemId);
+                jsonArray.put(item);
 
                 FileWriter fileWriter = new FileWriter(fileName);
-                fileWriter.write(JSONValue.toJSONString(jsonArray)); // Pretty print JSON
+                fileWriter.write(jsonArray.toString(4)); // Pretty print JSON
                 fileWriter.flush();
                 fileWriter.close();
             }
-        } catch (ParseException | IOException e){
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }

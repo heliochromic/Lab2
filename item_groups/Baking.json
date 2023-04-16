@@ -1,104 +1,102 @@
 [
-  {
-    "1": {
-      "amount": 10,
-      "price": 10.0,
-      "item_name": "name1"
+    {
+        "item_name": "Cupcake",
+        "amount": 12,
+        "price": 2.99
     },
-    "2": {
-      "amount": 20,
-      "price": 20.0,
-      "item_name": "name2"
+    {
+        "item_name": "Croissant",
+        "amount": 8,
+        "price": 3.49
     },
-    "3": {
-      "amount": 15,
-      "price": 10.0,
-      "item_name": "name3"
+    {
+        "item_name": "Baguette",
+        "amount": 15,
+        "price": 4.99
     },
-    "4": {
-      "amount": 17,
-      "price": 30.0,
-      "item_name": "name4"
+    {
+        "item_name": "Sourdough",
+        "amount": 5,
+        "price": 6.99
     },
-    "5": {
-      "amount": 12,
-      "price": 15.0,
-      "item_name": "name5"
+    {
+        "item_name": "Danish",
+        "amount": 10,
+        "price": 2.49
     },
-    "6": {
-      "amount": 8,
-      "price": 8.0,
-      "item_name": "name6"
+    {
+        "item_name": "Eclair",
+        "amount": 6,
+        "price": 3.99
     },
-    "7": {
-      "amount": 25,
-      "price": 12.0,
-      "item_name": "name7"
+    {
+        "item_name": "Brioche",
+        "amount": 7,
+        "price": 5.49
     },
-    "8": {
-      "amount": 18,
-      "price": 22.0,
-      "item_name": "name8"
+    {
+        "item_name": "Pretzel",
+        "amount": 9,
+        "price": 1.99
     },
-    "9": {
-      "amount": 11,
-      "price": 18.0,
-      "item_name": "name9"
+    {
+        "item_name": "Muffin",
+        "amount": 14,
+        "price": 2.99
     },
-    "10": {
-      "amount": 14,
-      "price": 14.0,
-      "item_name": "name10"
+    {
+        "item_name": "Apple turnover",
+        "amount": 3,
+        "price": 3.49
     },
-    "11": {
-      "amount": 19,
-      "price": 28.0,
-      "item_name": "name11"
+    {
+        "item_name": "Pain au chocolat",
+        "amount": 6,
+        "price": 3.99
     },
-    "12": {
-      "amount": 16,
-      "price": 16.0,
-      "item_name": "name12"
+    {
+        "item_name": "Cinnamon roll",
+        "amount": 4,
+        "price": 2.49
     },
-    "13": {
-      "amount": 23,
-      "price": 13.0,
-      "item_name": "name13"
+    {
+        "item_name": "Scone",
+        "amount": 8,
+        "price": 2.99
     },
-    "14": {
-      "amount": 9,
-      "price": 9.0,
-      "item_name": "name14"
+    {
+        "item_name": "Palmier",
+        "amount": 5,
+        "price": 1.99
     },
-    "15": {
-      "amount": 21,
-      "price": 26.0,
-      "item_name": "name15"
+    {
+        "item_name": "Kouign-amann",
+        "amount": 2,
+        "price": 4.99
     },
-    "16": {
-      "amount": 7,
-      "price": 11.0,
-      "item_name": "name16"
+    {
+        "item_name": "Rugelach",
+        "amount": 3,
+        "price": 3.49
     },
-    "17": {
-      "amount": 13,
-      "price": 20.0,
-      "item_name": "name17"
+    {
+        "item_name": "Fruit tart",
+        "amount": 4,
+        "price": 4.99
     },
-    "18": {
-      "amount": 24,
-      "price": 17.0,
-      "item_name": "name18"
+    {
+        "item_name": "Pumpkin bread",
+        "amount": 7,
+        "price": 3.99
     },
-    "19": {
-      "amount": 6,
-      "price": 7.0,
-      "item_name": "name19"
+    {
+        "item_name": "Poppy seed roll",
+        "amount": 2,
+        "price": 2.49
     },
-    "20": {
-      "amount": 22,
-      "price": 24.0,
-      "item_name": "name20"
+    {
+        "item_name": "Strudel",
+        "amount": 3,
+        "price": 5.49
     }
-  }
 ]

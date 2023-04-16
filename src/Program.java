@@ -1,7 +1,7 @@
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,40 +39,6 @@ public class Program extends JFrame {
         return label;
     }
 
-    public static Item[] JSONToArray(String fileName) {
-
-        JSONParser jsonParser = new JSONParser();
-        try (FileReader reader = new FileReader(fileName)) {
-            //Read JSON file
-            var obj = jsonParser.parse(reader);
-
-            if (obj != null) {
-                JSONArray employeeList = (JSONArray) obj;
-                System.out.println(employeeList.size());
-                System.out.println(employeeList);
-            }
-            ArrayList<Item> tempItems = new ArrayList<>();
-            //Iterate over employee array
-            /*employeeList.forEach(emp -> {
-                return tempItems.add(parseEmployeeObject((JSONObject) emp));
-            });*/
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
-        return null;
-    }
-
-    private static Item parseEmployeeObject(JSONObject employee, int index) {
-        //Get employee object within list
-        JSONObject itemObj = (JSONObject) employee.get(String.valueOf(index));
-
-        //Get employee first name
-        //String firstName = (String) employeeObject.get("firstName");
-        return new Item((String) itemObj.get("name"), (int) itemObj.get("amount"), (double) itemObj.get("price"));
-    }
 
     private void init() {
 
@@ -166,21 +132,13 @@ public class Program extends JFrame {
         headerRow.add(new JPanel());
 
         div.add(headerRow, BorderLayout.NORTH);
+        readJSON(filename);
 
+        ArrayList<Item> items = readJSON(filename);
 
-        /*Item[] items = {
-                new Item("Baton", 10, 25),
-                new Item("Chocolate bar", 25, 70),
-                new Item("Milk", 10, 40),
-        };*/
-
-
-
-        /*if (items != null){
-            for (Item item : items) {
-                div.add(item.getPanel());
-            }
-        }*/
+        for (Item item : items) {
+            div.add(item.getPanel());
+        }
 
 
         JScrollPane scrollPane = new JScrollPane(div);
@@ -227,12 +185,34 @@ public class Program extends JFrame {
                 tempItem.addItemIntoJSON(file.getAbsolutePath());
             }
             newFrame.dispose();
-            if (new File(".\\item_groups\\Baking.json").length() > 0) {
-                JSONToArray(".\\item_groups\\Baking.json");
-            }
         });
         newFrame.add(btnSave);
         newFrame.setVisible(true);
     }
+
+    public ArrayList<Item> readJSON(String path) {
+        ArrayList<Item> tempArrayList = new ArrayList<>();
+        try {
+            // Read JSON file
+            JSONTokener tokener = new JSONTokener(new FileReader(path));
+            JSONArray bakeryItems = new JSONArray(tokener);
+
+            // Print each object to the console
+            for (int i = 0; i < bakeryItems.length(); i++) {
+                JSONObject item = bakeryItems.getJSONObject(i);
+                tempArrayList.add(new Item(item.getString("item_name"), item.getInt("amount"), item.getDouble("price")));
+                System.out.println("Item Name: " + item.getString("item_name"));
+                System.out.println("Amount: " + item.getInt("amount"));
+                System.out.println("Price: " + item.getDouble("price"));
+                System.out.println();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        return tempArrayList;
+    }
+
 
 }

@@ -1,0 +1,102 @@
+[
+  {
+    "item_name": "Cupcake",
+    "amount": 12,
+    "price": 2.99
+  },
+  {
+    "item_name": "Croissant",
+    "amount": 8,
+    "price": 3.49
+  },
+  {
+    "item_name": "Baguette",
+    "amount": 15,
+    "price": 4.99
+  },
+  {
+    "item_name": "Sourdough",
+    "amount": 5,
+    "price": 6.99
+  },
+  {
+    "item_name": "Danish",
+    "amount": 10,
+    "price": 2.49
+  },
+  {
+    "item_name": "Eclair",
+    "amount": 6,
+    "price": 3.99
+  },
+  {
+    "item_name": "Brioche",
+    "amount": 7,
+    "price": 5.49
+  },
+  {
+    "item_name": "Pretzel",
+    "amount": 9,
+    "price": 1.99
+  },
+  {
+    "item_name": "Muffin",
+    "amount": 14,
+    "price": 2.99
+  },
+  {
+    "item_name": "Apple turnover",
+    "amount": 3,
+    "price": 3.49
+  },
+  {
+    "item_name": "Pain au chocolat",
+    "amount": 6,
+    "price": 3.99
+  },
+  {
+    "item_name": "Cinnamon roll",
+    "amount": 4,
+    "price": 2.49
+  },
+  {
+    "item_name": "Scone",
+    "amount": 8,
+    "price": 2.99
+  },
+  {
+    "item_name": "Palmier",
+    "amount": 5,
+    "price": 1.99
+  },
+  {
+    "item_name": "Kouign-amann",
+    "amount": 2,
+    "price": 4.99
+  },
+  {
+    "item_name": "Rugelach",
+    "amount": 3,
+    "price": 3.49
+  },
+  {
+    "item_name": "Fruit tart",
+    "amount": 4,
+    "price": 4.99
+  },
+  {
+    "item_name": "Pumpkin bread",
+    "amount": 7,
+    "price": 3.99
+  },
+  {
+    "item_name": "Poppy seed roll",
+    "amount": 2,
+    "price": 2.49
+  },
+  {
+    "item_name": "Strudel",
+    "amount": 3,
+    "price": 5.49
+  }
+]
