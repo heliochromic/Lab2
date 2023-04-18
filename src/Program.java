@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -19,7 +19,6 @@ public class Program extends JFrame {
 
     JPanel scrollPanel, buttonPanel, backgroundPanel, s, a, st;
     ArrayList<JPanel> items_list = new ArrayList<>();
-    JTextField search_bar;
     JButton search, add_group, add_item, stats;
     JTabbedPane tabbedPane;
     GridBagLayout layout;
@@ -58,7 +57,7 @@ public class Program extends JFrame {
         int mda = 0;
         for (String tab : tabs) {
             createTab(tab);
-            tabbedPane.add(tab, items_list.get(mda));
+            tabbedPane.add(tab.split("\\.")[0], items_list.get(mda));
             mda++;
         }
         //JSONToArray(".\\item_groups\\Baking.json");
@@ -66,8 +65,6 @@ public class Program extends JFrame {
         scrollPanel.setPreferredSize(new Dimension((int) (this.getWidth() * 0.88), this.getHeight()));
 
         scrollPanel.add(tabbedPane);
-
-        search_bar = new JTextField();
 
         search = Styles.buttonNormalization(new JButton("Search"));
         add_group = Styles.buttonNormalization(new JButton("Add group"));
@@ -80,7 +77,6 @@ public class Program extends JFrame {
         a = new JPanel();
         st = new JPanel();
 
-        s.add(search_bar);
         s.add(search);
         a.add(add_group);
         a.add(add_item);
@@ -90,9 +86,6 @@ public class Program extends JFrame {
         buttonPanel.setBackground(new Color(66, 48, 132));
         buttonPanel.setPreferredSize(new Dimension(((int) (this.getWidth() * 0.3)), this.getHeight()));
         buttonPanel.add(new JLabel(""));
-        buttonPanel.add(search_bar);
-        search_bar.setBorder(BorderFactory.createLineBorder(new Color(66, 48, 132), 5));
-        search_bar.setFont(new Font("Arial", Font.BOLD, 16));
         buttonPanel.add(search);
         buttonPanel.add(add_group);
         buttonPanel.add(add_item);
