@@ -6,28 +6,26 @@ import org.json.JSONTokener;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class Item {
-    private static int id = 0;
+    public static Set<String> uniqueNames = new HashSet<>();
     JPanel panel, buttonPanel;
     String name;
     int amount;
     double price;
-    private JButton buy, edit, delete;
-    private JLabel nameL;
-    private JLabel amountL;
-    private JLabel priceL;
+    private final JLabel nameL;
+    private final JLabel amountL;
+    private final JLabel priceL;
 
     Item(String name, int amount, double price) {
         this.name = name;
         this.amount = amount;
         this.price = price;
-        id++;
 
         panel = new JPanel(new GridLayout(1, 4));
         panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -40,13 +38,11 @@ public class Item {
         priceL = new JLabel(String.valueOf(price));
         //priceL.setPreferredSize(new Dimension(10, 60));
         buttonPanel = new JPanel(new GridLayout(1, 3));
-        buy = new JButton("add");
-        edit = new JButton("edit");
-        delete = new JButton("del");
+        JButton buy = new JButton("add");
+        JButton edit = new JButton("edit");
+        JButton delete = new JButton("del");
         buy.addActionListener(this::buyActionPerformed);
-
         edit.addActionListener(this::editActionPerformed);
-
         delete.addActionListener(this::deleteActionPerformed);
         panel.add(nameL);
         panel.add(amountL);
@@ -60,13 +56,11 @@ public class Item {
     public JPanel getPanel() {
         return panel;
     }
-
-    // Separate methods for each action
     private void buyActionPerformed(ActionEvent e) {
         this.amount++;
         this.amountL.setText(String.valueOf(amount));
         System.out.println("buy");
-        panel.getParent().repaint(); // Force a repaint of the parent container
+        panel.getParent().repaint();
     }
 
     private void editActionPerformed(ActionEvent e) {
@@ -78,19 +72,25 @@ public class Item {
             if (answer.equals("Назва")) {
                 while (true) {
                     String newName = JOptionPane.showInputDialog(this.panel, "Введіть нову назву: ");
-                    if (newName.strip().length() > 0) {
-                        this.name = newName;
-                        this.nameL.setText(newName);
-                        panel.getParent().repaint();
-                        break;
+                    if (!uniqueNames.contains(newName)){
+                        if (newName.strip().length() > 0) {
+                            editJSONProperty(answer, newName);
+                            this.name = newName;
+                            this.nameL.setText(newName);
+                            panel.getParent().repaint();
+                            break;
+                        } else {
+                            JOptionPane.showMessageDialog(this.panel, "Стрічка пуста, спробуйте ще раз");
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(this.panel, "Стрічка пуста, спробуйте ще раз");
+                        JOptionPane.showMessageDialog(this.panel, "Такий товар вже існує, на жаль, не можливо його додати ще раз");
                     }
                 }
             } else if (answer.equals("Ціна")) {
                 while (true) {
-                    String newPrice = JOptionPane.showInputDialog(this.panel, "Введіть нову ціну (вона має бути в форматі #*.##)");
+                    String newPrice = JOptionPane.showInputDialog(this.panel, "Введіть нову ціну (вона має бути в форматі #.##)");
                     if (isNumber(newPrice)) {
+                        editJSONProperty(answer, newPrice);
                         this.price = Double.parseDouble(newPrice);
                         if (newPrice.charAt(newPrice.length() - 2) == '.') newPrice += "0";
                         else if (!newPrice.contains(".")) newPrice += ".00";
@@ -103,6 +103,8 @@ public class Item {
             }
         } catch (NullPointerException ex) {
             System.out.println("ну ок");
+        } catch (FileNotFoundException | JSONException ex) {
+            throw new RuntimeException(ex);
         }
     }
 
@@ -118,6 +120,11 @@ public class Item {
             if (response == JOptionPane.NO_OPTION) {
                 System.out.println("ok");
             } else if (response == JOptionPane.YES_OPTION) {
+                try {
+                    deleteJSONItem();
+                } catch (IOException | JSONException ex) {
+                    throw new RuntimeException(ex);
+                }
                 this.panel.getParent().remove(this.panel);
             } else if (response == JOptionPane.CLOSED_OPTION) {
                 System.out.println("JOptionPane closed");
@@ -129,40 +136,103 @@ public class Item {
         try {
             File file = new File(fileName);
             if (file.length() == 0) {
-                // If file is empty, create a new JSONArray
                 JSONArray jsonArray = new JSONArray();
-                JSONObject item = new JSONObject();
-                item.put("item_name", this.name);
-                item.put("amount", this.amount);
-                item.put("price", this.price);
-                jsonArray.put(item);
-
-                FileWriter fileWriter = new FileWriter(fileName);
-                fileWriter.write(jsonArray.toString(4)); // Pretty print JSON
-                fileWriter.flush();
-                fileWriter.close();
+                itemToObject(fileName, jsonArray);
             } else {
-                // If file is not empty, parse the existing JSONArray
+
                 FileReader fileReader = new FileReader(fileName);
                 JSONTokener jsonTokener = new JSONTokener(fileReader);
                 JSONArray jsonArray = new JSONArray(jsonTokener);
 
-                JSONObject item = new JSONObject();
-                item.put("item_name", this.name);
-                item.put("amount", this.amount);
-                item.put("price", this.price);
-
-                jsonArray.put(item);
-
-                FileWriter fileWriter = new FileWriter(fileName);
-                fileWriter.write(jsonArray.toString(4)); // Pretty print JSON
-                fileWriter.flush();
-                fileWriter.close();
+                itemToObject(fileName, jsonArray);
             }
         } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
     }
+
+    private void itemToObject(String fileName, JSONArray jsonArray) throws JSONException, IOException {
+        JSONObject item = new JSONObject();
+        item.put("item_name", this.name);
+        item.put("amount", this.amount);
+        item.put("price", this.price);
+        jsonArray.put(item);
+
+        FileWriter fileWriter = new FileWriter(fileName);
+        fileWriter.write(jsonArray.toString(4));
+        fileWriter.flush();
+        fileWriter.close();
+    }
+
+    public void editJSONProperty (String key, String newValue) throws FileNotFoundException, JSONException {
+        File[] files = new File("item_groups").listFiles();
+        for (File file : Objects.requireNonNull(files)){
+            FileReader fileReader = new FileReader(file.getPath());
+            System.out.println(file.getAbsolutePath());
+            JSONTokener tokens = new JSONTokener(fileReader);
+            JSONArray itemsArray = new JSONArray(tokens);
+            if (key.equals("Назва")) {
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject item = itemsArray.getJSONObject(i);
+                    System.out.println(item.getString("item_name") + " - " + newValue + " - " + this.getName());
+                    if (item.getString("item_name").equals(this.getName())) {
+                        item.put("item_name", newValue);
+                        try {
+                            FileWriter fileWriter = new FileWriter(file.getPath());
+                            fileWriter.write(itemsArray.toString());
+                            fileWriter.flush();
+                            fileWriter.close();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        return;
+                    }
+                }
+            } else if (key.equals("Ціна")) {
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject item = itemsArray.getJSONObject(i);
+                    System.out.println(item.getString("price") + " - " + newValue + " - " + this.getPrice());
+                    if (item.getString("item_name").equals(this.getName())) {
+                        item.put("price", Double.parseDouble(newValue));
+                        try {
+                            FileWriter fileWriter = new FileWriter(file.getPath());
+                            fileWriter.write(itemsArray.toString());
+                            fileWriter.flush();
+                            fileWriter.close();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+    }
+
+    public void deleteJSONItem() throws IOException, JSONException {
+        File[] files = new File("item_groups").listFiles();
+        for (File file : Objects.requireNonNull(files)) {
+            FileReader fileReader = new FileReader(file.getPath());
+            System.out.println(file.getAbsolutePath());
+            JSONTokener tokens = new JSONTokener(fileReader);
+            JSONArray itemsArray = new JSONArray(tokens);
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject item = itemsArray.getJSONObject(i);
+                    if (item.getString("item_name").equals(this.getName())) {
+                        itemsArray.remove(i);
+
+                        // Write the updated JSON data back to the file
+                        FileWriter fileWriter = new FileWriter(file.getPath());
+                        fileWriter.write(itemsArray.toString());
+                        fileWriter.flush();
+                        fileWriter.close();
+
+                        return;
+                    }
+                }
+            }
+        }
+
 
     public boolean isNumber(String input) {
         return Pattern.compile("^\\d+(.\\d{1,2})?$").matcher(input).matches();

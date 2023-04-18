@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class Program extends JFrame {
     JTabbedPane tabbedPane;
     GridBagLayout layout;
     GridBagConstraints constraints;
+    Set<String> tabs;
 
     public Program() {
         this.setName("vidrah?");
@@ -43,11 +45,16 @@ public class Program extends JFrame {
     private void init() {
 
         tabbedPane = new JTabbedPane();
-        Set<String> tabs = new TreeSet<>();
-        tabs.add("Candies");
+        tabs = new TreeSet<>();
+        /*tabs.add("Candies");
         tabs.add("Diary");
         tabs.add("Baking");
-        tabs.add("Hygiene");
+        tabs.add("Hygiene");*/
+        File[] files = new File(".\\item_groups").listFiles();
+        for (File f: files){
+            tabs.add(f.getName());
+        }
+        System.out.println(files);
         int mda = 0;
         for (String tab : tabs) {
             createTab(tab);
@@ -64,6 +71,7 @@ public class Program extends JFrame {
 
         search = Styles.buttonNormalization(new JButton("Search"));
         add_group = Styles.buttonNormalization(new JButton("Add group"));
+        add_group.addActionListener(this::addGroupActionPerformed);
         add_item = Styles.buttonNormalization(new JButton("Add item"));
         add_item.addActionListener(this::addItemActionPerformed);
         stats = Styles.buttonNormalization(new JButton("Statistics"));
@@ -108,10 +116,12 @@ public class Program extends JFrame {
         this.pack();
     }
 
+
+
     public void createTab(String name) {
         String filename = "";
         try {
-            filename = ".\\item_groups\\" + name + ".json";
+            filename = ".\\item_groups\\" + name;
             File f = new File(filename);
             if (f.createNewFile()) System.out.println("New " + filename + " was created");
             else System.out.println("File already exists.");
@@ -132,12 +142,17 @@ public class Program extends JFrame {
         headerRow.add(new JPanel());
 
         div.add(headerRow, BorderLayout.NORTH);
+        div.add(headerRow, BorderLayout.NORTH);
 
+        if(new File(filename).length() > 0){
+            ArrayList<Item> items = readJSON(filename);
 
-        ArrayList<Item> items = readJSON(filename);
-
-        for (Item item : items) {
-            div.add(item.getPanel());
+            for (Item item : items) {
+                if (!Item.uniqueNames.contains(item.getName().strip())) {
+                    div.add(item.getPanel());
+                    Item.uniqueNames.add(item.getName().strip());
+                }
+            }
         }
 
 
@@ -175,54 +190,67 @@ public class Program extends JFrame {
         JButton btnSave = new JButton("Save");
         Styles.tabsButtonNormalization(btnSave);
         btnSave.addActionListener(e1 -> {
-
-
-            // Create a new Item object with the input values
-            Item newItem = null;
-            while (true) {
-                try {
-                    String itemName = txtItemName.getText();
+            Item newItem;
+            try {
+                String itemName = txtItemName.getText();
+                if (!Item.uniqueNames.contains(itemName)){
                     String amount = txtAmount.getText();
                     String price = txtPrice.getText();
-                    if (!itemName.isEmpty() && !amount.isEmpty() && !price.isEmpty()) {
+                    File[] files = new File(".\\item_groups").listFiles();
+                    if (!itemName.isEmpty() && !amount.isEmpty() && !price.isEmpty() && files != null) {
+                        File file = files[tabbedPane.getSelectedIndex()];
                         newItem = new Item(itemName, Integer.parseInt(amount), Double.parseDouble(price));
-                        break;
+                        newItem.addItemIntoJSON(file.getAbsolutePath());
+
+                        JPanel panel = items_list.get(tabbedPane.getSelectedIndex());
+
+                        JScrollPane scrollPane = (JScrollPane) panel.getComponent(0);
+                        JPanel div = (JPanel) scrollPane.getViewport().getView();
+                        div.add(newItem.getPanel());
+                        panel.revalidate();
+                        panel.repaint();
                     }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(newFrame, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
-                    txtItemName.setText("");
-                    txtAmount.setText("");
-                    txtPrice.setText("");
-                    break;
+                } else {
+                    JOptionPane.showMessageDialog(newFrame, "This product already exists in lists", "Error", JOptionPane.ERROR_MESSAGE);
                 }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(newFrame, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                txtItemName.setText("");
+                txtAmount.setText("");
+                txtPrice.setText("");
             }
-
-            // Get the selected tab's index
-            int tabIndex = tabbedPane.getSelectedIndex();
-
-            // Get the corresponding panel from the items_list
-            JPanel panel = items_list.get(tabIndex);
-
-            // Add the new item's panel to the tab's panel
-            JScrollPane scrollPane = (JScrollPane) panel.getComponent(0);
-            JPanel div = (JPanel) scrollPane.getViewport().getView();
-            div.add(newItem.getPanel());
-
-            panel.revalidate();
-            panel.repaint();
-
             newFrame.dispose();
         });
         newFrame.add(btnSave);
         newFrame.setVisible(true);
     }
 
+    private void addGroupActionPerformed(ActionEvent e) {
+        int response = JOptionPane.showConfirmDialog(this.getParent(), "Чи хочете ви додати нову групу товарів?", "Delete?",
+                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.NO_OPTION) {
+
+        } else if (response == JOptionPane.YES_OPTION) {
+            String newGroup = JOptionPane.showInputDialog(this.getParent(), "Введіть нову назву: ");
+            if(!tabs.contains(newGroup)){
+                if (newGroup.strip().length() > 0) {
+                    createTab(newGroup);
+                    tabs.add(newGroup);
+                    tabbedPane.add(newGroup, items_list.get(items_list.size()-1));
+                } else {
+                    JOptionPane.showMessageDialog(this.getParent(), "Стрічка пуста, спробуйте ще раз");
+                }
+            }
+        } else if (response == JOptionPane.CLOSED_OPTION) {
+            System.out.println("JOptionPane closed");
+        }
+    }
+
     public ArrayList<Item> readJSON(String path) {
         ArrayList<Item> tempArrayList = new ArrayList<>();
         try {
-            // Read JSON file
-            JSONTokener tokener = new JSONTokener(new FileReader(path));
-            JSONArray items = new JSONArray(tokener);
+            JSONTokener tokens = new JSONTokener(new FileReader(path));
+            JSONArray items = new JSONArray(tokens);
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
                 tempArrayList.add(new Item(item.getString("item_name"), item.getInt("amount"), item.getDouble("price")));
@@ -234,4 +262,12 @@ public class Program extends JFrame {
         }
         return tempArrayList;
     }
+
+
+
+    /*
+
+    Місце для методів іри і не кроку вгору до мого коду
+
+    */
 }
