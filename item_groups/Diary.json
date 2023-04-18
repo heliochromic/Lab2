@@ -1,102 +1,102 @@
 [
   {
-    "item_name": "Cupcake",
-    "amount": 12,
-    "price": 2.99
-  },
-  {
-    "item_name": "Croissant",
-    "amount": 8,
-    "price": 3.49
-  },
-  {
-    "item_name": "Baguette",
-    "amount": 15,
-    "price": 4.99
-  },
-  {
-    "item_name": "Sourdough",
-    "amount": 5,
-    "price": 6.99
-  },
-  {
-    "item_name": "Danish",
+    "item_name": "Milk",
     "amount": 10,
-    "price": 2.49
-  },
-  {
-    "item_name": "Eclair",
-    "amount": 6,
-    "price": 3.99
-  },
-  {
-    "item_name": "Brioche",
-    "amount": 7,
-    "price": 5.49
-  },
-  {
-    "item_name": "Pretzel",
-    "amount": 9,
     "price": 1.99
   },
   {
-    "item_name": "Muffin",
-    "amount": 14,
-    "price": 2.99
-  },
-  {
-    "item_name": "Apple turnover",
-    "amount": 3,
+    "item_name": "Cheese",
+    "amount": 5,
     "price": 3.49
   },
   {
-    "item_name": "Pain au chocolat",
-    "amount": 6,
-    "price": 3.99
-  },
-  {
-    "item_name": "Cinnamon roll",
-    "amount": 4,
-    "price": 2.49
-  },
-  {
-    "item_name": "Scone",
+    "item_name": "Yogurt",
     "amount": 8,
     "price": 2.99
   },
   {
-    "item_name": "Palmier",
-    "amount": 5,
+    "item_name": "Butter",
+    "amount": 3,
+    "price": 2.49
+  },
+  {
+    "item_name": "Eggs",
+    "amount": 12,
+    "price": 1.49
+  },
+  {
+    "item_name": "Cream",
+    "amount": 6,
+    "price": 3.99
+  },
+  {
+    "item_name": "Cottage cheese",
+    "amount": 7,
+    "price": 2.99
+  },
+  {
+    "item_name": "Sour cream",
+    "amount": 4,
     "price": 1.99
   },
   {
-    "item_name": "Kouign-amann",
+    "item_name": "Whipped cream",
     "amount": 2,
+    "price": 2.99
+  },
+  {
+    "item_name": "Mozzarella",
+    "amount": 6,
+    "price": 4.49
+  },
+  {
+    "item_name": "Greek yogurt",
+    "amount": 9,
+    "price": 3.99
+  },
+  {
+    "item_name": "Ricotta cheese",
+    "amount": 3,
     "price": 4.99
   },
   {
-    "item_name": "Rugelach",
+    "item_name": "Curd",
+    "amount": 5,
+    "price": 2.49
+  },
+  {
+    "item_name": "Goat cheese",
+    "amount": 2,
+    "price": 5.99
+  },
+  {
+    "item_name": "Soy milk",
+    "amount": 4,
+    "price": 2.99
+  },
+  {
+    "item_name": "Almond milk",
     "amount": 3,
     "price": 3.49
   },
   {
-    "item_name": "Fruit tart",
-    "amount": 4,
-    "price": 4.99
+    "item_name": "Coconut milk",
+    "amount": 2,
+    "price": 2.99
   },
   {
-    "item_name": "Pumpkin bread",
-    "amount": 7,
+    "item_name": "Quinoa milk",
+    "amount": 1,
     "price": 3.99
   },
   {
-    "item_name": "Poppy seed roll",
+    "item_name": "Oat milk",
     "amount": 2,
-    "price": 2.49
+    "price": 3.49
   },
   {
-    "item_name": "Strudel",
-    "amount": 3,
-    "price": 5.49
+    "item_name": "Cashew milk",
+    "amount": 1,
+    "price": 4.99
   }
 ]

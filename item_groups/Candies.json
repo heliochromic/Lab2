@@ -1,102 +1,102 @@
 [
   {
-    "item_name": "Cupcake",
-    "amount": 12,
-    "price": 2.99
+    "item_name": "Gummy bears",
+    "amount": 20,
+    "price": 1.99
   },
   {
-    "item_name": "Croissant",
-    "amount": 8,
-    "price": 3.49
-  },
-  {
-    "item_name": "Baguette",
+    "item_name": "Sour Patch Kids",
     "amount": 15,
-    "price": 4.99
+    "price": 2.49
   },
   {
-    "item_name": "Sourdough",
-    "amount": 5,
-    "price": 6.99
-  },
-  {
-    "item_name": "Danish",
+    "item_name": "M&M's",
     "amount": 10,
-    "price": 2.49
-  },
-  {
-    "item_name": "Eclair",
-    "amount": 6,
     "price": 3.99
   },
   {
-    "item_name": "Brioche",
-    "amount": 7,
-    "price": 5.49
+    "item_name": "Skittles",
+    "amount": 25,
+    "price": 0.99
   },
   {
-    "item_name": "Pretzel",
-    "amount": 9,
+    "item_name": "Hershey's Chocolate Bar",
+    "amount": 12,
+    "price": 1.49
+  },
+  {
+    "item_name": "Twizzlers",
+    "amount": 8,
     "price": 1.99
   },
   {
-    "item_name": "Muffin",
-    "amount": 14,
+    "item_name": "Snickers",
+    "amount": 5,
+    "price": 1.79
+  },
+  {
+    "item_name": "Reese's Peanut Butter Cups",
+    "amount": 18,
     "price": 2.99
   },
   {
-    "item_name": "Apple turnover",
-    "amount": 3,
-    "price": 3.49
-  },
-  {
-    "item_name": "Pain au chocolat",
+    "item_name": "Kit Kat",
     "amount": 6,
-    "price": 3.99
+    "price": 1.49
   },
   {
-    "item_name": "Cinnamon roll",
-    "amount": 4,
+    "item_name": "Haribo Gold Bears",
+    "amount": 30,
+    "price": 2.99
+  },
+  {
+    "item_name": "Lollipops",
+    "amount": 20,
+    "price": 0.49
+  },
+  {
+    "item_name": "Tootsie Rolls",
+    "amount": 15,
+    "price": 0.99
+  },
+  {
+    "item_name": "Sour Worms",
+    "amount": 10,
+    "price": 1.99
+  },
+  {
+    "item_name": "Jelly Beans",
+    "amount": 12,
     "price": 2.49
   },
   {
-    "item_name": "Scone",
-    "amount": 8,
-    "price": 2.99
-  },
-  {
-    "item_name": "Palmier",
+    "item_name": "Cotton Candy",
     "amount": 5,
     "price": 1.99
   },
   {
-    "item_name": "Kouign-amann",
-    "amount": 2,
-    "price": 4.99
+    "item_name": "Gumballs",
+    "amount": 8,
+    "price": 0.79
   },
   {
-    "item_name": "Rugelach",
-    "amount": 3,
-    "price": 3.49
+    "item_name": "Nerds",
+    "amount": 10,
+    "price": 1.49
   },
   {
-    "item_name": "Fruit tart",
+    "item_name": "Caramel Chews",
+    "amount": 6,
+    "price": 2.99
+  },
+  {
+    "item_name": "Jawbreakers",
     "amount": 4,
-    "price": 4.99
+    "price": 0.99
   },
   {
-    "item_name": "Pumpkin bread",
-    "amount": 7,
-    "price": 3.99
-  },
-  {
-    "item_name": "Poppy seed roll",
-    "amount": 2,
-    "price": 2.49
-  },
-  {
-    "item_name": "Strudel",
+    "item_name": "Rock Candy",
     "amount": 3,
-    "price": 5.49
+    "price": 1.99
   }
 ]

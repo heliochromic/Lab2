@@ -1,101 +1,101 @@
 [
   {
-    "item_name": "Cupcake",
+    "item_name": "Toothpaste",
     "amount": 12,
     "price": 2.99
   },
   {
-    "item_name": "Croissant",
+    "item_name": "Shampoo",
     "amount": 8,
     "price": 3.49
   },
   {
-    "item_name": "Baguette",
+    "item_name": "Soap",
     "amount": 15,
     "price": 4.99
   },
   {
-    "item_name": "Sourdough",
+    "item_name": "Toothbrush",
     "amount": 5,
     "price": 6.99
   },
   {
-    "item_name": "Danish",
+    "item_name": "Hand sanitizer",
     "amount": 10,
     "price": 2.49
   },
   {
-    "item_name": "Eclair",
+    "item_name": "Body wash",
     "amount": 6,
     "price": 3.99
   },
   {
-    "item_name": "Brioche",
+    "item_name": "Face mask",
     "amount": 7,
     "price": 5.49
   },
   {
-    "item_name": "Pretzel",
+    "item_name": "Deodorant",
     "amount": 9,
     "price": 1.99
   },
   {
-    "item_name": "Muffin",
+    "item_name": "Toilet paper",
     "amount": 14,
     "price": 2.99
   },
   {
-    "item_name": "Apple turnover",
+    "item_name": "Feminine hygiene products",
     "amount": 3,
     "price": 3.49
   },
   {
-    "item_name": "Pain au chocolat",
+    "item_name": "Razors",
     "amount": 6,
     "price": 3.99
   },
   {
-    "item_name": "Cinnamon roll",
+    "item_name": "Mouthwash",
     "amount": 4,
     "price": 2.49
   },
   {
-    "item_name": "Scone",
+    "item_name": "Hand soap",
     "amount": 8,
     "price": 2.99
   },
   {
-    "item_name": "Palmier",
+    "item_name": "Tissues",
     "amount": 5,
     "price": 1.99
   },
   {
-    "item_name": "Kouign-amann",
+    "item_name": "Sunscreen",
     "amount": 2,
     "price": 4.99
   },
   {
-    "item_name": "Rugelach",
+    "item_name": "Conditioner",
     "amount": 3,
     "price": 3.49
   },
   {
-    "item_name": "Fruit tart",
+    "item_name": "Lotion",
     "amount": 4,
     "price": 4.99
   },
   {
-    "item_name": "Pumpkin bread",
+    "item_name": "Cotton swabs",
     "amount": 7,
     "price": 3.99
   },
   {
-    "item_name": "Poppy seed roll",
+    "item_name": "Toilet bowl cleaner",
     "amount": 2,
     "price": 2.49
   },
   {
-    "item_name": "Strudel",
+    "item_name": "Towel",
     "amount": 3,
     "price": 5.49
   }

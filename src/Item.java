@@ -37,7 +37,7 @@ public class Item {
         //nameL.setPreferredSize(new Dimension(20, 60));
         amountL = new JLabel(String.valueOf(amount));
         //amountL.setPreferredSize(new Dimension(10, 60));
-        priceL = new JLabel(String.valueOf(price) + "0");
+        priceL = new JLabel(String.valueOf(price));
         //priceL.setPreferredSize(new Dimension(10, 60));
         buttonPanel = new JPanel(new GridLayout(1, 3));
         buy = new JButton("add");
@@ -94,9 +94,7 @@ public class Item {
                         this.price = Double.parseDouble(newPrice);
                         if (newPrice.charAt(newPrice.length() - 2) == '.') newPrice += "0";
                         else if (!newPrice.contains(".")) newPrice += ".00";
-
                         this.priceL.setText(newPrice);
-                        panel.getParent().repaint();
                         break;
                     } else {
                         JOptionPane.showMessageDialog(this.panel, "Ціна не відповідає умовам");
@@ -132,13 +130,11 @@ public class Item {
             File file = new File(fileName);
             if (file.length() == 0) {
                 // If file is empty, create a new JSONArray
-                JSONObject itemId = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
                 JSONObject item = new JSONObject();
-                itemId.put("item_name", this.name);
-                itemId.put("amount", this.amount);
-                itemId.put("price", this.price);
-                item.put(String.valueOf(id), itemId);
+                item.put("item_name", this.name);
+                item.put("amount", this.amount);
+                item.put("price", this.price);
                 jsonArray.put(item);
 
                 FileWriter fileWriter = new FileWriter(fileName);
@@ -151,13 +147,11 @@ public class Item {
                 JSONTokener jsonTokener = new JSONTokener(fileReader);
                 JSONArray jsonArray = new JSONArray(jsonTokener);
 
-                JSONObject itemId = new JSONObject();
                 JSONObject item = new JSONObject();
-                itemId.put("item_name", this.name);
-                itemId.put("amount", this.amount);
-                itemId.put("price", this.price);
+                item.put("item_name", this.name);
+                item.put("amount", this.amount);
+                item.put("price", this.price);
 
-                item.put(String.valueOf(id), itemId);
                 jsonArray.put(item);
 
                 FileWriter fileWriter = new FileWriter(fileName);

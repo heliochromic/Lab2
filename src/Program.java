@@ -132,7 +132,7 @@ public class Program extends JFrame {
         headerRow.add(new JPanel());
 
         div.add(headerRow, BorderLayout.NORTH);
-        readJSON(filename);
+
 
         ArrayList<Item> items = readJSON(filename);
 
@@ -175,15 +175,42 @@ public class Program extends JFrame {
         JButton btnSave = new JButton("Save");
         Styles.tabsButtonNormalization(btnSave);
         btnSave.addActionListener(e1 -> {
-            String itemName = txtItemName.getText();
-            String amount = txtAmount.getText();
-            String price = txtPrice.getText();
-            File[] files = new File(".\\item_groups").listFiles();
-            if (files != null) {
-                File file = files[tabbedPane.getSelectedIndex()];
-                Item tempItem = new Item(itemName, Integer.parseInt(amount), Double.parseDouble(price));
-                tempItem.addItemIntoJSON(file.getAbsolutePath());
+
+
+            // Create a new Item object with the input values
+            Item newItem = null;
+            while (true) {
+                try {
+                    String itemName = txtItemName.getText();
+                    String amount = txtAmount.getText();
+                    String price = txtPrice.getText();
+                    if (!itemName.isEmpty() && !amount.isEmpty() && !price.isEmpty()) {
+                        newItem = new Item(itemName, Integer.parseInt(amount), Double.parseDouble(price));
+                        break;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(newFrame, "Please fill in all the fields.", "Error", JOptionPane.ERROR_MESSAGE);
+                    txtItemName.setText("");
+                    txtAmount.setText("");
+                    txtPrice.setText("");
+                    break;
+                }
             }
+
+            // Get the selected tab's index
+            int tabIndex = tabbedPane.getSelectedIndex();
+
+            // Get the corresponding panel from the items_list
+            JPanel panel = items_list.get(tabIndex);
+
+            // Add the new item's panel to the tab's panel
+            JScrollPane scrollPane = (JScrollPane) panel.getComponent(0);
+            JPanel div = (JPanel) scrollPane.getViewport().getView();
+            div.add(newItem.getPanel());
+
+            panel.revalidate();
+            panel.repaint();
+
             newFrame.dispose();
         });
         newFrame.add(btnSave);
@@ -195,16 +222,10 @@ public class Program extends JFrame {
         try {
             // Read JSON file
             JSONTokener tokener = new JSONTokener(new FileReader(path));
-            JSONArray bakeryItems = new JSONArray(tokener);
-
-            // Print each object to the console
-            for (int i = 0; i < bakeryItems.length(); i++) {
-                JSONObject item = bakeryItems.getJSONObject(i);
+            JSONArray items = new JSONArray(tokener);
+            for (int i = 0; i < items.length(); i++) {
+                JSONObject item = items.getJSONObject(i);
                 tempArrayList.add(new Item(item.getString("item_name"), item.getInt("amount"), item.getDouble("price")));
-                System.out.println("Item Name: " + item.getString("item_name"));
-                System.out.println("Amount: " + item.getInt("amount"));
-                System.out.println("Price: " + item.getDouble("price"));
-                System.out.println();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -213,6 +234,4 @@ public class Program extends JFrame {
         }
         return tempArrayList;
     }
-
-
 }
