@@ -7,9 +7,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
-
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
@@ -19,7 +22,7 @@ public class Program extends JFrame {
 
     JPanel scrollPanel, buttonPanel, backgroundPanel, s, a, st;
     ArrayList<JPanel> items_list = new ArrayList<>();
-    JButton search, add_group, add_item, stats;
+    JButton search, add_group, delete_group, add_item, stats;
     JTabbedPane tabbedPane;
     GridBagLayout layout;
     GridBagConstraints constraints;
@@ -45,12 +48,8 @@ public class Program extends JFrame {
 
         tabbedPane = new JTabbedPane();
         tabs = new TreeSet<>();
-        /*tabs.add("Candies");
-        tabs.add("Diary");
-        tabs.add("Baking");
-        tabs.add("Hygiene");*/
         File[] files = new File(".\\item_groups").listFiles();
-        for (File f: files){
+        for (File f : files) {
             tabs.add(f.getName());
         }
         System.out.println(files);
@@ -69,6 +68,8 @@ public class Program extends JFrame {
         search = Styles.buttonNormalization(new JButton("Search"));
         add_group = Styles.buttonNormalization(new JButton("Add group"));
         add_group.addActionListener(this::addGroupActionPerformed);
+        delete_group = Styles.buttonNormalization(new JButton("Delete group"));
+        delete_group.addActionListener(this::deleteGroupActionPerformed);
         add_item = Styles.buttonNormalization(new JButton("Add item"));
         add_item.addActionListener(this::addItemActionPerformed);
         stats = Styles.buttonNormalization(new JButton("Statistics"));
@@ -79,6 +80,7 @@ public class Program extends JFrame {
 
         s.add(search);
         a.add(add_group);
+        a.add(delete_group);
         a.add(add_item);
         st.add(stats);
 
@@ -88,6 +90,7 @@ public class Program extends JFrame {
         buttonPanel.add(new JLabel(""));
         buttonPanel.add(search);
         buttonPanel.add(add_group);
+        buttonPanel.add(delete_group);
         buttonPanel.add(add_item);
         buttonPanel.add(stats);
 
@@ -110,11 +113,14 @@ public class Program extends JFrame {
     }
 
 
-
     public void createTab(String name) {
         String filename = "";
         try {
-            filename = ".\\item_groups\\" + name;
+            try {
+                if (name.split("\\.")[1].equals("json")) filename = ".\\item_groups\\" + name;
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                filename = ".\\item_groups\\" + name + ".json";
+            }
             File f = new File(filename);
             if (f.createNewFile()) System.out.println("New " + filename + " was created");
             else System.out.println("File already exists.");
@@ -137,9 +143,8 @@ public class Program extends JFrame {
         div.add(headerRow, BorderLayout.NORTH);
         div.add(headerRow, BorderLayout.NORTH);
 
-        if(new File(filename).length() > 0){
+        if (new File(filename).length() > 0) {
             ArrayList<Item> items = readJSON(filename);
-
             for (Item item : items) {
                 if (!Item.uniqueNames.contains(item.getName().strip())) {
                     div.add(item.getPanel());
@@ -186,7 +191,8 @@ public class Program extends JFrame {
             Item newItem;
             try {
                 String itemName = txtItemName.getText();
-                if (!Item.uniqueNames.contains(itemName)){
+                if (!Item.uniqueNames.contains(itemName)) {
+                    Item.uniqueNames.add(itemName);
                     String amount = txtAmount.getText();
                     String price = txtPrice.getText();
                     File[] files = new File(".\\item_groups").listFiles();
@@ -194,7 +200,6 @@ public class Program extends JFrame {
                         File file = files[tabbedPane.getSelectedIndex()];
                         newItem = new Item(itemName, Integer.parseInt(amount), Double.parseDouble(price));
                         newItem.addItemIntoJSON(file.getAbsolutePath());
-
                         JPanel panel = items_list.get(tabbedPane.getSelectedIndex());
 
                         JScrollPane scrollPane = (JScrollPane) panel.getComponent(0);
@@ -219,21 +224,50 @@ public class Program extends JFrame {
     }
 
     private void addGroupActionPerformed(ActionEvent e) {
-        int response = JOptionPane.showConfirmDialog(this.getParent(), "Чи хочете ви додати нову групу товарів?", "Delete?",
+        int response = JOptionPane.showConfirmDialog(this.getParent(), "Чи хочете ви додати нову групу товарів?", "Add?",
                 JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (response == JOptionPane.NO_OPTION) {
-
         } else if (response == JOptionPane.YES_OPTION) {
             String newGroup = JOptionPane.showInputDialog(this.getParent(), "Введіть нову назву: ");
-            if(!tabs.contains(newGroup)){
+            if (!tabs.contains(newGroup + ".json")) {
                 if (newGroup.strip().length() > 0) {
                     createTab(newGroup);
                     tabs.add(newGroup);
-                    tabbedPane.add(newGroup, items_list.get(items_list.size()-1));
+                    tabbedPane.add(newGroup, items_list.get(items_list.size() - 1));
                 } else {
                     JOptionPane.showMessageDialog(this.getParent(), "Стрічка пуста, спробуйте ще раз");
                 }
+            } else {
+                JOptionPane.showMessageDialog(this.getParent(), "Така групу товарів вже існує, спробуйте ще раз");
             }
+        } else if (response == JOptionPane.CLOSED_OPTION) {
+            System.out.println("JOptionPane closed");
+        }
+    }
+
+    public void deleteGroupActionPerformed(ActionEvent e) {
+        int response = JOptionPane.showConfirmDialog(this.getParent(), "Do you want to delete the current group of items?", "Delete?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+        if (response == JOptionPane.YES_OPTION) {
+            int selectedIndex = tabbedPane.getSelectedIndex();
+            if (selectedIndex >= 0 && selectedIndex < tabbedPane.getTabCount()) {
+                File[] files = new File("item_groups").listFiles();
+                if (files != null && selectedIndex < files.length) {
+                    try {
+                        Files.deleteIfExists(Paths.get(files[selectedIndex].getPath()));
+                        System.out.println("File was deleted");
+                        items_list.remove(selectedIndex);
+                        tabbedPane.remove(selectedIndex);
+                    } catch (IOException ex) {
+                        System.out.println("Failed to delete file");
+                    }
+                } else {
+                    System.out.println("Invalid index or item_groups directory is empty");
+                }
+            } else {
+                System.out.println("Invalid selected index");
+            }
+        } else if (response == JOptionPane.NO_OPTION) {
+            // Do nothing
         } else if (response == JOptionPane.CLOSED_OPTION) {
             System.out.println("JOptionPane closed");
         }
