@@ -1,0 +1,237 @@
+Index: item_groups/Hygiene.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[\r\n  {\r\n    \"item_name\": \"Toothpaste\",\r\n    \"amount\": 12,\r\n    \"price\": 2.99\r\n  },\r\n  {\r\n    \"item_name\": \"Shampoo\",\r\n    \"amount\": 8,\r\n    \"price\": 3.49\r\n  },\r\n  {\r\n    \"item_name\": \"Soap\",\r\n    \"amount\": 15,\r\n    \"price\": 4.99\r\n  },\r\n  {\r\n    \"item_name\": \"Toothbrush\",\r\n    \"amount\": 5,\r\n    \"price\": 6.99\r\n  },\r\n  {\r\n    \"item_name\": \"Hand sanitizer\",\r\n    \"amount\": 10,\r\n    \"price\": 2.49\r\n  },\r\n  {\r\n    \"item_name\": \"Body wash\",\r\n    \"amount\": 6,\r\n    \"price\": 3.99\r\n  },\r\n  {\r\n    \"item_name\": \"Face mask\",\r\n    \"amount\": 7,\r\n    \"price\": 5.49\r\n  },\r\n  {\r\n    \"item_name\": \"Deodorant\",\r\n    \"amount\": 9,\r\n    \"price\": 1.99\r\n  },\r\n  {\r\n    \"item_name\": \"Toilet paper\",\r\n    \"amount\": 14,\r\n    \"price\": 2.99\r\n  },\r\n  {\r\n    \"item_name\": \"Feminine hygiene products\",\r\n    \"amount\": 3,\r\n    \"price\": 3.49\r\n  },\r\n  {\r\n    \"item_name\": \"Razors\",\r\n    \"amount\": 6,\r\n    \"price\": 3.99\r\n  },\r\n  {\r\n    \"item_name\": \"Mouthwash\",\r\n    \"amount\": 4,\r\n    \"price\": 2.49\r\n  },\r\n  {\r\n    \"item_name\": \"Hand soap\",\r\n    \"amount\": 8,\r\n    \"price\": 2.99\r\n  },\r\n  {\r\n    \"item_name\": \"Tissues\",\r\n    \"amount\": 5,\r\n    \"price\": 1.99\r\n  },\r\n  {\r\n    \"item_name\": \"Sunscreen\",\r\n    \"amount\": 2,\r\n    \"price\": 4.99\r\n  },\r\n  {\r\n    \"item_name\": \"Conditioner\",\r\n    \"amount\": 3,\r\n    \"price\": 3.49\r\n  },\r\n  {\r\n    \"item_name\": \"Lotion\",\r\n    \"amount\": 4,\r\n    \"price\": 4.99\r\n  },\r\n  {\r\n    \"item_name\": \"Cotton swabs\",\r\n    \"amount\": 7,\r\n    \"price\": 3.99\r\n  },\r\n  {\r\n    \"item_name\": \"Toilet bowl cleaner\",\r\n    \"amount\": 2,\r\n    \"price\": 2.49\r\n  },\r\n  {\r\n    \"item_name\": \"Towel\",\r\n    \"amount\": 3,\r\n    \"price\": 5.49\r\n  }\r\n]
+===================================================================
+diff --git a/item_groups/Hygiene.json b/item_groups/Hygiene.json
+--- a/item_groups/Hygiene.json	
++++ b/item_groups/Hygiene.json	
+@@ -1,102 +1,127 @@
+ [
+-  {
+-    "item_name": "Toothpaste",
+-    "amount": 12,
+-    "price": 2.99
+-  },
+-  {
+-    "item_name": "Shampoo",
+-    "amount": 8,
+-    "price": 3.49
+-  },
+-  {
+-    "item_name": "Soap",
+-    "amount": 15,
+-    "price": 4.99
+-  },
+-  {
+-    "item_name": "Toothbrush",
+-    "amount": 5,
+-    "price": 6.99
+-  },
+-  {
+-    "item_name": "Hand sanitizer",
+-    "amount": 10,
+-    "price": 2.49
+-  },
+-  {
+-    "item_name": "Body wash",
+-    "amount": 6,
+-    "price": 3.99
+-  },
+-  {
+-    "item_name": "Face mask",
+-    "amount": 7,
+-    "price": 5.49
+-  },
+-  {
+-    "item_name": "Deodorant",
+-    "amount": 9,
+-    "price": 1.99
+-  },
+-  {
+-    "item_name": "Toilet paper",
+-    "amount": 14,
+-    "price": 2.99
+-  },
+-  {
+-    "item_name": "Feminine hygiene products",
+-    "amount": 3,
+-    "price": 3.49
+-  },
+-  {
+-    "item_name": "Razors",
+-    "amount": 6,
+-    "price": 3.99
+-  },
+-  {
+-    "item_name": "Mouthwash",
+-    "amount": 4,
+-    "price": 2.49
+-  },
+-  {
+-    "item_name": "Hand soap",
+-    "amount": 8,
+-    "price": 2.99
+-  },
+-  {
+-    "item_name": "Tissues",
+-    "amount": 5,
+-    "price": 1.99
+-  },
+-  {
+-    "item_name": "Sunscreen",
+-    "amount": 2,
+-    "price": 4.99
+-  },
+-  {
+-    "item_name": "Conditioner",
+-    "amount": 3,
+-    "price": 3.49
+-  },
+-  {
+-    "item_name": "Lotion",
+-    "amount": 4,
+-    "price": 4.99
+-  },
+-  {
+-    "item_name": "Cotton swabs",
+-    "amount": 7,
+-    "price": 3.99
+-  },
+-  {
+-    "item_name": "Toilet bowl cleaner",
+-    "amount": 2,
+-    "price": 2.49
+-  },
+-  {
+-    "item_name": "Towel",
+-    "amount": 3,
+-    "price": 5.49
+-  }
++    {
++        "amount": 12,
++        "item_name": "Toothpaste",
++        "price": 2.99
++    },
++    {
++        "amount": 8,
++        "item_name": "Shampoo",
++        "price": 3.49
++    },
++    {
++        "amount": 15,
++        "item_name": "Soap",
++        "price": 4.99
++    },
++    {
++        "amount": 5,
++        "item_name": "Toothbrush",
++        "price": 6.99
++    },
++    {
++        "amount": 10,
++        "item_name": "Hand sanitizer",
++        "price": 2.49
++    },
++    {
++        "amount": 6,
++        "item_name": "Body wash",
++        "price": 3.99
++    },
++    {
++        "amount": 7,
++        "item_name": "Face mask",
++        "price": 5.49
++    },
++    {
++        "amount": 9,
++        "item_name": "Deodorant",
++        "price": 1.99
++    },
++    {
++        "amount": 14,
++        "item_name": "Toilet paper",
++        "price": 2.99
++    },
++    {
++        "amount": 3,
++        "item_name": "Feminine hygiene products",
++        "price": 3.49
++    },
++    {
++        "amount": 6,
++        "item_name": "Razors",
++        "price": 3.99
++    },
++    {
++        "amount": 4,
++        "item_name": "Mouthwash",
++        "price": 2.49
++    },
++    {
++        "amount": 8,
++        "item_name": "Hand soap",
++        "price": 2.99
++    },
++    {
++        "amount": 5,
++        "item_name": "Tissues",
++        "price": 1.99
++    },
++    {
++        "amount": 2,
++        "item_name": "Sunscreen",
++        "price": 4.99
++    },
++    {
++        "amount": 3,
++        "item_name": "Conditioner",
++        "price": 3.49
++    },
++    {
++        "amount": 4,
++        "item_name": "Lotion",
++        "price": 4.99
++    },
++    {
++        "amount": 7,
++        "item_name": "Cotton swabs",
++        "price": 3.99
++    },
++    {
++        "amount": 2,
++        "item_name": "Toilet bowl cleaner",
++        "price": 2.49
++    },
++    {
++        "amount": 3,
++        "item_name": "Towel",
++        "price": 5.49
++    },
++    {
++        "amount": 5,
++        "item_name": "апмиро",
++        "price": 645
++    },
++    {
++        "amount": 5,
++        "item_name": "гншщ",
++        "price": 9
++    },
++    {
++        "amount": 2,
++        "item_name": "Товар",
++        "price": 23
++    },
++    {
++        "amount": 15,
++        "item_name": "товар",
++        "price": 1
++    },
++    {
++        "amount": 4,
++        "item_name": "орпав",
++        "price": 4
++    }
+ ]
+\ No newline at end of file

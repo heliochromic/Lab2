@@ -74,6 +74,7 @@ public class Program extends JFrame {
         add_item = Styles.buttonNormalization(new JButton("Add item"));
         add_item.addActionListener(this::addItemActionPerformed);
         stats = Styles.buttonNormalization(new JButton("Statistics"));
+        stats.addActionListener(this::statistic);
 
         s = new JPanel();
         a = new JPanel();
@@ -319,6 +320,40 @@ public class Program extends JFrame {
             throw new RuntimeException(e);
         }
         return tempArrayList;
+    }
+    private void statistic(ActionEvent e){
+        double total=0;
+        JFrame frameSt= new JFrame();
+        frameSt.setTitle("Statistic");
+        frameSt.setSize(1000,700);
+        frameSt.setResizable(false);
+        File[] files=new File(".\\item_groups").listFiles();
+        frameSt.setLayout(new GridLayout(files.length+1, 1));
+        for(File f: files){
+            double totalGr=0;
+            JPanel  group = new JPanel(new BorderLayout());
+            JLabel name = new JLabel(f.getName());
+            name.setHorizontalAlignment(JLabel.HORIZONTAL);
+            group.add(name,BorderLayout.NORTH);
+            ArrayList<Item> items= readJSON(f.getAbsolutePath());
+            JPanel it = new JPanel(new GridLayout(items.size(), 2));
+            for(Item item: items){
+                it.add(item.getPanel());
+                double res = item.getPrice()*item.getAmount();
+                it.add(new JLabel(res+" $"));
+                totalGr+=res;
+            }
+            group.add(it,BorderLayout.CENTER);
+            JLabel totGr=new JLabel("Загальна вартість продуктів у групі: "+totalGr+" $");
+            total+=totalGr;
+            totGr.setHorizontalAlignment(JLabel.HORIZONTAL);
+            group.add(totGr,BorderLayout.SOUTH);
+            frameSt.add(group);
+            JLabel totalPrice= new JLabel("Сумарна вартість товарів на складі: "+total+" $");
+            totalPrice.setHorizontalAlignment(JLabel.HORIZONTAL);
+            frameSt.add(totalPrice);
+        }
+        frameSt.setVisible(true);
     }
 
 

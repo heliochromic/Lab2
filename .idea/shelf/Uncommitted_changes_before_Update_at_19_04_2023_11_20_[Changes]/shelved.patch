@@ -1,0 +1,449 @@
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"f87a5624-665c-46ac-93da-6b5013d5f704\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/item_groups/Baking.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/item_groups/Baking.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Item.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Item.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Program.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Program.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"ira\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"RESET_MODE\" value=\"MIXED\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2NwyJ2jFFIRQqB6k0koFa91CG6n\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,\r\n    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;D:/code/code_wow/lib/org.json.jar&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\code\\code_wow\\2 trimester\\main\\Lab2_\\out\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"f87a5624-665c-46ac-93da-6b5013d5f704\" name=\"Changes\" comment=\"\" />\r\n      <created>1680589367016</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1680589367016</updated>\r\n      <workItem from=\"1680589369344\" duration=\"17852000\" />\r\n      <workItem from=\"1680621743582\" duration=\"11526000\" />\r\n      <workItem from=\"1680685520268\" duration=\"9233000\" />\r\n      <workItem from=\"1680771736269\" duration=\"27000\" />\r\n      <workItem from=\"1680773103557\" duration=\"634000\" />\r\n      <workItem from=\"1680788100699\" duration=\"1627000\" />\r\n      <workItem from=\"1680792655368\" duration=\"8000\" />\r\n      <workItem from=\"1680797730649\" duration=\"54000\" />\r\n      <workItem from=\"1680874356566\" duration=\"1598000\" />\r\n      <workItem from=\"1680900674326\" duration=\"569000\" />\r\n      <workItem from=\"1681312141558\" duration=\"3275000\" />\r\n      <workItem from=\"1681379165117\" duration=\"2611000\" />\r\n      <workItem from=\"1681381982690\" duration=\"545000\" />\r\n      <workItem from=\"1681389746427\" duration=\"5560000\" />\r\n      <workItem from=\"1681414279126\" duration=\"7580000\" />\r\n      <workItem from=\"1681504223807\" duration=\"27590000\" />\r\n      <workItem from=\"1681585502112\" duration=\"95000\" />\r\n      <workItem from=\"1681585614379\" duration=\"11744000\" />\r\n      <workItem from=\"1681623781713\" duration=\"16745000\" />\r\n      <workItem from=\"1681729449909\" duration=\"210000\" />\r\n      <workItem from=\"1681814812922\" duration=\"7765000\" />\r\n      <workItem from=\"1681836174655\" duration=\"6941000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/Item.java</url>\r\n          <line>177</line>\r\n          <option name=\"timeStamp\" value=\"6\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/Item.java</url>\r\n          <line>178</line>\r\n          <option name=\"timeStamp\" value=\"8\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/Item.java</url>\r\n          <line>194</line>\r\n          <option name=\"timeStamp\" value=\"9\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 1d447cae4c7dc62298b646525a7caaa2624bd5bd)
++++ b/.idea/workspace.xml	(date 1681853538907)
+@@ -1,11 +1,15 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="AutoImportSettings">
++    <option name="autoReloadType" value="SELECTIVE" />
++  </component>
+   <component name="ChangeListManager">
+     <list default="true" id="f87a5624-665c-46ac-93da-6b5013d5f704" name="Changes" comment="">
++      <change afterPath="$PROJECT_DIR$/.idea/libraries/org_json1.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/item_groups/Baking.json" beforeDir="false" afterPath="$PROJECT_DIR$/item_groups/Baking.json" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Item.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Item.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Lab2_.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Lab2_.iml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/item_groups/Hygiene.json" beforeDir="false" afterPath="$PROJECT_DIR$/item_groups/Hygiene.json" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -20,11 +24,6 @@
+     </option>
+   </component>
+   <component name="Git.Settings">
+-    <option name="RECENT_BRANCH_BY_REPOSITORY">
+-      <map>
+-        <entry key="$PROJECT_DIR$" value="ira" />
+-      </map>
+-    </option>
+     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+     <option name="RESET_MODE" value="MIXED" />
+   </component>
+@@ -37,30 +36,33 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+-    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;D:/code/code_wow/lib/org.json.jar&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "RunOnceActivity.OpenProjectViewOnStart": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "WebServerToolWindowFactoryState": "false",
++    "last_opened_file_path": "C:/Users/HP/org.json.jar",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "project.structure.last.edited": "Libraries",
++    "project.structure.proportion": "0.0",
++    "project.structure.side.proportion": "0.0"
+   }
+-}</component>
+-  <component name="RecentsManager">
+-    <key name="MoveFile.RECENT_KEYS">
+-      <recent name="D:\code\code_wow\2 trimester\main\Lab2_\out" />
+-    </key>
++}]]></component>
++  <component name="RunManager">
++    <configuration name="Run" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="Run" />
++      <module name="Lab2_" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <recent_temporary>
++      <list>
++        <item itemvalue="Application.Run" />
++      </list>
++    </recent_temporary>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+@@ -72,26 +74,7 @@
+       <updated>1680589367016</updated>
+       <workItem from="1680589369344" duration="17852000" />
+       <workItem from="1680621743582" duration="11526000" />
+-      <workItem from="1680685520268" duration="9233000" />
+-      <workItem from="1680771736269" duration="27000" />
+-      <workItem from="1680773103557" duration="634000" />
+-      <workItem from="1680788100699" duration="1627000" />
+-      <workItem from="1680792655368" duration="8000" />
+-      <workItem from="1680797730649" duration="54000" />
+-      <workItem from="1680874356566" duration="1598000" />
+-      <workItem from="1680900674326" duration="569000" />
+-      <workItem from="1681312141558" duration="3275000" />
+-      <workItem from="1681379165117" duration="2611000" />
+-      <workItem from="1681381982690" duration="545000" />
+-      <workItem from="1681389746427" duration="5560000" />
+-      <workItem from="1681414279126" duration="7580000" />
+-      <workItem from="1681504223807" duration="27590000" />
+-      <workItem from="1681585502112" duration="95000" />
+-      <workItem from="1681585614379" duration="11744000" />
+-      <workItem from="1681623781713" duration="16745000" />
+-      <workItem from="1681729449909" duration="210000" />
+-      <workItem from="1681814812922" duration="7765000" />
+-      <workItem from="1681836174655" duration="6941000" />
++      <workItem from="1680685520268" duration="6836000" />
+     </task>
+     <servers />
+   </component>
+@@ -109,25 +92,4 @@
+       </map>
+     </option>
+   </component>
+-  <component name="XDebuggerManager">
+-    <breakpoint-manager>
+-      <breakpoints>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/src/Item.java</url>
+-          <line>177</line>
+-          <option name="timeStamp" value="6" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/src/Item.java</url>
+-          <line>178</line>
+-          <option name="timeStamp" value="8" />
+-        </line-breakpoint>
+-        <line-breakpoint enabled="true" type="java-line">
+-          <url>file://$PROJECT_DIR$/src/Item.java</url>
+-          <line>194</line>
+-          <option name="timeStamp" value="9" />
+-        </line-breakpoint>
+-      </breakpoints>
+-    </breakpoint-manager>
+-  </component>
+ </project>
+\ No newline at end of file
+Index: item_groups/Hygiene.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>[\r\n  {\r\n    \"item_name\": \"Toothpaste\",\r\n    \"amount\": 12,\r\n    \"price\": 2.99\r\n  },\r\n  {\r\n    \"item_name\": \"Shampoo\",\r\n    \"amount\": 8,\r\n    \"price\": 3.49\r\n  },\r\n  {\r\n    \"item_name\": \"Soap\",\r\n    \"amount\": 15,\r\n    \"price\": 4.99\r\n  },\r\n  {\r\n    \"item_name\": \"Toothbrush\",\r\n    \"amount\": 5,\r\n    \"price\": 6.99\r\n  },\r\n  {\r\n    \"item_name\": \"Hand sanitizer\",\r\n    \"amount\": 10,\r\n    \"price\": 2.49\r\n  },\r\n  {\r\n    \"item_name\": \"Body wash\",\r\n    \"amount\": 6,\r\n    \"price\": 3.99\r\n  },\r\n  {\r\n    \"item_name\": \"Face mask\",\r\n    \"amount\": 7,\r\n    \"price\": 5.49\r\n  },\r\n  {\r\n    \"item_name\": \"Deodorant\",\r\n    \"amount\": 9,\r\n    \"price\": 1.99\r\n  },\r\n  {\r\n    \"item_name\": \"Toilet paper\",\r\n    \"amount\": 14,\r\n    \"price\": 2.99\r\n  },\r\n  {\r\n    \"item_name\": \"Feminine hygiene products\",\r\n    \"amount\": 3,\r\n    \"price\": 3.49\r\n  },\r\n  {\r\n    \"item_name\": \"Razors\",\r\n    \"amount\": 6,\r\n    \"price\": 3.99\r\n  },\r\n  {\r\n    \"item_name\": \"Mouthwash\",\r\n    \"amount\": 4,\r\n    \"price\": 2.49\r\n  },\r\n  {\r\n    \"item_name\": \"Hand soap\",\r\n    \"amount\": 8,\r\n    \"price\": 2.99\r\n  },\r\n  {\r\n    \"item_name\": \"Tissues\",\r\n    \"amount\": 5,\r\n    \"price\": 1.99\r\n  },\r\n  {\r\n    \"item_name\": \"Sunscreen\",\r\n    \"amount\": 2,\r\n    \"price\": 4.99\r\n  },\r\n  {\r\n    \"item_name\": \"Conditioner\",\r\n    \"amount\": 3,\r\n    \"price\": 3.49\r\n  },\r\n  {\r\n    \"item_name\": \"Lotion\",\r\n    \"amount\": 4,\r\n    \"price\": 4.99\r\n  },\r\n  {\r\n    \"item_name\": \"Cotton swabs\",\r\n    \"amount\": 7,\r\n    \"price\": 3.99\r\n  },\r\n  {\r\n    \"item_name\": \"Toilet bowl cleaner\",\r\n    \"amount\": 2,\r\n    \"price\": 2.49\r\n  },\r\n  {\r\n    \"item_name\": \"Towel\",\r\n    \"amount\": 3,\r\n    \"price\": 5.49\r\n  }\r\n]
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/item_groups/Hygiene.json b/item_groups/Hygiene.json
+--- a/item_groups/Hygiene.json	(revision 1d447cae4c7dc62298b646525a7caaa2624bd5bd)
++++ b/item_groups/Hygiene.json	(date 1681853900115)
+@@ -1,102 +1,127 @@
+ [
+-  {
+-    "item_name": "Toothpaste",
+-    "amount": 12,
+-    "price": 2.99
+-  },
+-  {
+-    "item_name": "Shampoo",
+-    "amount": 8,
+-    "price": 3.49
+-  },
+-  {
+-    "item_name": "Soap",
+-    "amount": 15,
+-    "price": 4.99
+-  },
+-  {
+-    "item_name": "Toothbrush",
+-    "amount": 5,
+-    "price": 6.99
+-  },
+-  {
+-    "item_name": "Hand sanitizer",
+-    "amount": 10,
+-    "price": 2.49
+-  },
+-  {
+-    "item_name": "Body wash",
+-    "amount": 6,
+-    "price": 3.99
+-  },
+-  {
+-    "item_name": "Face mask",
+-    "amount": 7,
+-    "price": 5.49
+-  },
+-  {
+-    "item_name": "Deodorant",
+-    "amount": 9,
+-    "price": 1.99
+-  },
+-  {
+-    "item_name": "Toilet paper",
+-    "amount": 14,
+-    "price": 2.99
+-  },
+-  {
+-    "item_name": "Feminine hygiene products",
+-    "amount": 3,
+-    "price": 3.49
+-  },
+-  {
+-    "item_name": "Razors",
+-    "amount": 6,
+-    "price": 3.99
+-  },
+-  {
+-    "item_name": "Mouthwash",
+-    "amount": 4,
+-    "price": 2.49
+-  },
+-  {
+-    "item_name": "Hand soap",
+-    "amount": 8,
+-    "price": 2.99
+-  },
+-  {
+-    "item_name": "Tissues",
+-    "amount": 5,
+-    "price": 1.99
+-  },
+-  {
+-    "item_name": "Sunscreen",
+-    "amount": 2,
+-    "price": 4.99
+-  },
+-  {
+-    "item_name": "Conditioner",
+-    "amount": 3,
+-    "price": 3.49
+-  },
+-  {
+-    "item_name": "Lotion",
+-    "amount": 4,
+-    "price": 4.99
+-  },
+-  {
+-    "item_name": "Cotton swabs",
+-    "amount": 7,
+-    "price": 3.99
+-  },
+-  {
+-    "item_name": "Toilet bowl cleaner",
+-    "amount": 2,
+-    "price": 2.49
+-  },
+-  {
+-    "item_name": "Towel",
+-    "amount": 3,
+-    "price": 5.49
+-  }
++    {
++        "amount": 12,
++        "item_name": "Toothpaste",
++        "price": 2.99
++    },
++    {
++        "amount": 8,
++        "item_name": "Shampoo",
++        "price": 3.49
++    },
++    {
++        "amount": 15,
++        "item_name": "Soap",
++        "price": 4.99
++    },
++    {
++        "amount": 5,
++        "item_name": "Toothbrush",
++        "price": 6.99
++    },
++    {
++        "amount": 10,
++        "item_name": "Hand sanitizer",
++        "price": 2.49
++    },
++    {
++        "amount": 6,
++        "item_name": "Body wash",
++        "price": 3.99
++    },
++    {
++        "amount": 7,
++        "item_name": "Face mask",
++        "price": 5.49
++    },
++    {
++        "amount": 9,
++        "item_name": "Deodorant",
++        "price": 1.99
++    },
++    {
++        "amount": 14,
++        "item_name": "Toilet paper",
++        "price": 2.99
++    },
++    {
++        "amount": 3,
++        "item_name": "Feminine hygiene products",
++        "price": 3.49
++    },
++    {
++        "amount": 6,
++        "item_name": "Razors",
++        "price": 3.99
++    },
++    {
++        "amount": 4,
++        "item_name": "Mouthwash",
++        "price": 2.49
++    },
++    {
++        "amount": 8,
++        "item_name": "Hand soap",
++        "price": 2.99
++    },
++    {
++        "amount": 5,
++        "item_name": "Tissues",
++        "price": 1.99
++    },
++    {
++        "amount": 2,
++        "item_name": "Sunscreen",
++        "price": 4.99
++    },
++    {
++        "amount": 3,
++        "item_name": "Conditioner",
++        "price": 3.49
++    },
++    {
++        "amount": 4,
++        "item_name": "Lotion",
++        "price": 4.99
++    },
++    {
++        "amount": 7,
++        "item_name": "Cotton swabs",
++        "price": 3.99
++    },
++    {
++        "amount": 2,
++        "item_name": "Toilet bowl cleaner",
++        "price": 2.49
++    },
++    {
++        "amount": 3,
++        "item_name": "Towel",
++        "price": 5.49
++    },
++    {
++        "amount": 5,
++        "item_name": "апмиро",
++        "price": 645
++    },
++    {
++        "amount": 5,
++        "item_name": "гншщ",
++        "price": 9
++    },
++    {
++        "amount": 2,
++        "item_name": "Товар",
++        "price": 23
++    },
++    {
++        "amount": 15,
++        "item_name": "товар",
++        "price": 1
++    },
++    {
++        "amount": 4,
++        "item_name": "орпав",
++        "price": 4
++    }
+ ]
+\ No newline at end of file
+Index: .idea/libraries/org_json1.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/libraries/org_json1.xml b/.idea/libraries/org_json1.xml
+new file mode 100644
+--- /dev/null	(date 1681853167560)
++++ b/.idea/libraries/org_json1.xml	(date 1681853167560)
+@@ -0,0 +1,9 @@
++<component name="libraryTable">
++  <library name="org.json1">
++    <CLASSES>
++      <root url="jar://$USER_HOME$/org.json.jar!/" />
++    </CLASSES>
++    <JAVADOC />
++    <SOURCES />
++  </library>
++</component>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_19\" project-jdk-name=\"openjdk-20\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 1d447cae4c7dc62298b646525a7caaa2624bd5bd)
++++ b/.idea/misc.xml	(date 1681852243306)
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" project-jdk-name="openjdk-20" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" project-jdk-name="openjdk-20 (2)" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: Lab2_.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src\" isTestSource=\"false\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"library\" name=\"gson-2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"json-simple-1.1.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"org.json\" level=\"project\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Lab2_.iml b/Lab2_.iml
+--- a/Lab2_.iml	(revision 1d447cae4c7dc62298b646525a7caaa2624bd5bd)
++++ b/Lab2_.iml	(date 1681853167538)
+@@ -10,5 +10,6 @@
+     <orderEntry type="library" name="gson-2.2" level="project" />
+     <orderEntry type="library" name="json-simple-1.1.1" level="project" />
+     <orderEntry type="library" name="org.json" level="project" />
++    <orderEntry type="library" name="org.json1" level="project" />
+   </component>
+ </module>
+\ No newline at end of file

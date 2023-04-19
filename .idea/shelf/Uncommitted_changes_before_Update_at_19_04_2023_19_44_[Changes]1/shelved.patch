@@ -1,0 +1,206 @@
+Index: src/Program.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import org.json.JSONArray;\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\nimport org.json.JSONTokener;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.ActionEvent;\r\nimport java.io.File;\r\nimport java.io.FileReader;\r\nimport java.io.IOException;\r\nimport java.nio.file.Files;\r\nimport java.nio.file.NoSuchFileException;\r\nimport java.nio.file.Path;\r\nimport java.nio.file.Paths;\r\nimport java.util.ArrayList;\r\nimport java.util.Set;\r\nimport java.util.TreeSet;\r\n\r\n\r\npublic class Program extends JFrame {\r\n\r\n    JPanel scrollPanel, buttonPanel, backgroundPanel, s, a, st;\r\n    ArrayList<JPanel> items_list = new ArrayList<>();\r\n    JButton search, add_group, delete_group, add_item, stats;\r\n    JTabbedPane tabbedPane;\r\n    GridBagLayout layout;\r\n    GridBagConstraints constraints;\r\n    Set<String> tabs;\r\n\r\n    public Program() {\r\n        this.setName(\"vidrah?\");\r\n        setSize(1000, 700);\r\n        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n        setResizable(false);\r\n        init();\r\n        setVisible(true);\r\n    }\r\n\r\n    private static JLabel createLabel(String text, int width) {\r\n        JLabel label = new JLabel(text);\r\n        label.setPreferredSize(new Dimension(width, 30));\r\n        return label;\r\n    }\r\n\r\n\r\n    private void init() {\r\n\r\n        tabbedPane = new JTabbedPane();\r\n        tabs = new TreeSet<>();\r\n        File[] files = new File(\".\\\\item_groups\").listFiles();\r\n        for (File f : files) {\r\n            tabs.add(f.getName());\r\n        }\r\n        System.out.println(files);\r\n        int mda = 0;\r\n        for (String tab : tabs) {\r\n            createTab(tab);\r\n            tabbedPane.add(tab.split(\"\\\\.\")[0], items_list.get(mda));\r\n            mda++;\r\n        }\r\n        //JSONToArray(\".\\\\item_groups\\\\Baking.json\");\r\n        scrollPanel = new JPanel();\r\n        scrollPanel.setPreferredSize(new Dimension((int) (this.getWidth() * 0.88), this.getHeight()));\r\n\r\n        scrollPanel.add(tabbedPane);\r\n\r\n        search = Styles.buttonNormalization(new JButton(\"Search\"));\r\n        add_group = Styles.buttonNormalization(new JButton(\"Add group\"));\r\n        add_group.addActionListener(this::addGroupActionPerformed);\r\n        delete_group = Styles.buttonNormalization(new JButton(\"Delete group\"));\r\n        delete_group.addActionListener(this::deleteGroupActionPerformed);\r\n        add_item = Styles.buttonNormalization(new JButton(\"Add item\"));\r\n        add_item.addActionListener(this::addItemActionPerformed);\r\n        stats = Styles.buttonNormalization(new JButton(\"Statistics\"));\r\n\r\n        s = new JPanel();\r\n        a = new JPanel();\r\n        st = new JPanel();\r\n\r\n        s.add(search);\r\n        a.add(add_group);\r\n        a.add(delete_group);\r\n        a.add(add_item);\r\n        st.add(stats);\r\n\r\n        buttonPanel = new JPanel(new GridLayout(7, 1));\r\n        buttonPanel.setBackground(new Color(66, 48, 132));\r\n        buttonPanel.setPreferredSize(new Dimension(((int) (this.getWidth() * 0.3)), this.getHeight()));\r\n        buttonPanel.add(new JLabel(\"\"));\r\n        buttonPanel.add(search);\r\n        buttonPanel.add(add_group);\r\n        buttonPanel.add(delete_group);\r\n        buttonPanel.add(add_item);\r\n        buttonPanel.add(stats);\r\n\r\n        buttonPanel.setBorder(BorderFactory.createEmptyBorder(40, 10, 20, 10));\r\n\r\n        layout = new GridBagLayout();\r\n        constraints = new GridBagConstraints();\r\n        constraints.fill = GridBagConstraints.BOTH;\r\n        constraints.weightx = 0.8;\r\n        constraints.insets = new Insets(0, 0, 0, 0);\r\n        layout.setConstraints(scrollPanel, constraints);\r\n        constraints.weightx = 0.2;\r\n        layout.setConstraints(buttonPanel, constraints);\r\n\r\n        backgroundPanel = new JPanel(layout);\r\n        backgroundPanel.add(scrollPanel);\r\n        backgroundPanel.add(buttonPanel);\r\n        this.getContentPane().add(backgroundPanel);\r\n        this.pack();\r\n    }\r\n\r\n\r\n    public void createTab(String name) {\r\n        String filename = \"\";\r\n        try {\r\n            try {\r\n                if (name.split(\"\\\\.\")[1].equals(\"json\")) filename = \".\\\\item_groups\\\\\" + name;\r\n            } catch (ArrayIndexOutOfBoundsException ex) {\r\n                filename = \".\\\\item_groups\\\\\" + name + \".json\";\r\n            }\r\n            File f = new File(filename);\r\n            if (f.createNewFile()) System.out.println(\"New \" + filename + \" was created\");\r\n            else System.out.println(\"File already exists.\");\r\n        } catch (IOException e) {\r\n            System.out.println(\"damn\");\r\n            e.printStackTrace();\r\n        }\r\n        items_list.add(createScrollableTable(filename));\r\n    }\r\n\r\n    public JPanel createScrollableTable(String filename) {\r\n        JPanel headerRow = new JPanel(new GridLayout(1, 5));\r\n        JPanel div = new JPanel(new GridLayout(0, 1));\r\n        headerRow.setPreferredSize(new Dimension(div.getWidth(), 50));\r\n        headerRow.add(createLabel(\"Item Name\", 60));\r\n        headerRow.add(createLabel(\"Amount\", 10));\r\n        headerRow.add(createLabel(\"Price\", 30));\r\n        headerRow.add(new JPanel());\r\n\r\n        div.add(headerRow, BorderLayout.NORTH);\r\n        div.add(headerRow, BorderLayout.NORTH);\r\n\r\n        if (new File(filename).length() > 0) {\r\n            ArrayList<Item> items = readJSON(filename);\r\n            for (Item item : items) {\r\n                if (!Item.uniqueNames.contains(item.getName().strip())) {\r\n                    div.add(item.getPanel());\r\n                    Item.uniqueNames.add(item.getName().strip());\r\n                }\r\n            }\r\n        }\r\n\r\n\r\n        JScrollPane scrollPane = new JScrollPane(div);\r\n        scrollPane.setPreferredSize(new Dimension(850, 670));\r\n        JPanel p = new JPanel();\r\n        p.add(scrollPane);\r\n        return p;\r\n    }\r\n\r\n    private void addItemActionPerformed(ActionEvent e) {\r\n        JFrame newFrame = new JFrame();\r\n        newFrame.setTitle(\"New Frame\");\r\n        newFrame.setSize(300, 180);\r\n        newFrame.setResizable(false);\r\n\r\n        newFrame.setLayout(new GridLayout(4, 2, 10, 10));\r\n\r\n        JLabel lblItemName = new JLabel(\"Item Name:\");\r\n        JTextField txtItemName = new JTextField();\r\n        newFrame.add(lblItemName);\r\n        newFrame.add(txtItemName);\r\n\r\n        JLabel lblAmount = new JLabel(\"Amount:\");\r\n        JTextField txtAmount = new JTextField();\r\n        newFrame.add(lblAmount);\r\n        newFrame.add(txtAmount);\r\n\r\n        JLabel lblPrice = new JLabel(\"Price:\");\r\n        JTextField txtPrice = new JTextField();\r\n        newFrame.add(lblPrice);\r\n        newFrame.add(txtPrice);\r\n\r\n        newFrame.add(new JLabel());\r\n        JButton btnSave = new JButton(\"Save\");\r\n        Styles.tabsButtonNormalization(btnSave);\r\n        btnSave.addActionListener(e1 -> {\r\n            Item newItem;\r\n            try {\r\n                String itemName = txtItemName.getText();\r\n                if (!Item.uniqueNames.contains(itemName)) {\r\n                    Item.uniqueNames.add(itemName);\r\n                    String amount = txtAmount.getText();\r\n                    String price = txtPrice.getText();\r\n                    File[] files = new File(\".\\\\item_groups\").listFiles();\r\n                    if (!itemName.isEmpty() && !amount.isEmpty() && !price.isEmpty() && files != null) {\r\n                        File file = files[tabbedPane.getSelectedIndex()];\r\n                        newItem = new Item(itemName, Integer.parseInt(amount), Double.parseDouble(price));\r\n                        newItem.addItemIntoJSON(file.getAbsolutePath());\r\n                        JPanel panel = items_list.get(tabbedPane.getSelectedIndex());\r\n\r\n                        JScrollPane scrollPane = (JScrollPane) panel.getComponent(0);\r\n                        JPanel div = (JPanel) scrollPane.getViewport().getView();\r\n                        div.add(newItem.getPanel());\r\n                        panel.revalidate();\r\n                        panel.repaint();\r\n                    }\r\n                } else {\r\n                    JOptionPane.showMessageDialog(newFrame, \"This product already exists in lists\", \"Error\", JOptionPane.ERROR_MESSAGE);\r\n                }\r\n            } catch (NumberFormatException ex) {\r\n                JOptionPane.showMessageDialog(newFrame, \"Please fill in all the fields.\", \"Error\", JOptionPane.ERROR_MESSAGE);\r\n                txtItemName.setText(\"\");\r\n                txtAmount.setText(\"\");\r\n                txtPrice.setText(\"\");\r\n            }\r\n            newFrame.dispose();\r\n        });\r\n        newFrame.add(btnSave);\r\n        newFrame.setVisible(true);\r\n    }\r\n\r\n    private void addGroupActionPerformed(ActionEvent e) {\r\n        int response = JOptionPane.showConfirmDialog(this.getParent(), \"Чи хочете ви додати нову групу товарів?\", \"Add?\",\r\n                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);\r\n        if (response == JOptionPane.NO_OPTION) {\r\n        } else if (response == JOptionPane.YES_OPTION) {\r\n            String newGroup = JOptionPane.showInputDialog(this.getParent(), \"Введіть нову назву: \");\r\n            if (!tabs.contains(newGroup + \".json\")) {\r\n                if (newGroup.strip().length() > 0) {\r\n                    createTab(newGroup);\r\n                    tabs.add(newGroup);\r\n                    tabbedPane.add(newGroup, items_list.get(items_list.size() - 1));\r\n                } else {\r\n                    JOptionPane.showMessageDialog(this.getParent(), \"Стрічка пуста, спробуйте ще раз\");\r\n                }\r\n            } else {\r\n                JOptionPane.showMessageDialog(this.getParent(), \"Така групу товарів вже існує, спробуйте ще раз\");\r\n            }\r\n        } else if (response == JOptionPane.CLOSED_OPTION) {\r\n            System.out.println(\"JOptionPane closed\");\r\n        }\r\n    }\r\n\r\n    public void deleteGroupActionPerformed(ActionEvent e) {\r\n        int response = JOptionPane.showConfirmDialog(this.getParent(), \"Do you want to delete the current group of items?\", \"Delete?\", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);\r\n        if (response == JOptionPane.YES_OPTION) {\r\n            int selectedIndex = tabbedPane.getSelectedIndex();\r\n            if (selectedIndex >= 0 && selectedIndex < tabbedPane.getTabCount()) {\r\n                File[] files = new File(\"item_groups\").listFiles();\r\n                if (files != null && selectedIndex < files.length) {\r\n                    try {\r\n                        Files.deleteIfExists(Paths.get(files[selectedIndex].getPath()));\r\n                        System.out.println(\"File was deleted\");\r\n                        items_list.remove(selectedIndex);\r\n                        tabbedPane.remove(selectedIndex);\r\n                    } catch (IOException ex) {\r\n                        System.out.println(\"Failed to delete file\");\r\n                    }\r\n                } else {\r\n                    System.out.println(\"Invalid index or item_groups directory is empty\");\r\n                }\r\n            } else {\r\n                System.out.println(\"Invalid selected index\");\r\n            }\r\n        } else if (response == JOptionPane.NO_OPTION) {\r\n            // Do nothing\r\n        } else if (response == JOptionPane.CLOSED_OPTION) {\r\n            System.out.println(\"JOptionPane closed\");\r\n        }\r\n    }\r\n\r\n    public ArrayList<Item> readJSON(String path) {\r\n        ArrayList<Item> tempArrayList = new ArrayList<>();\r\n        try {\r\n            JSONTokener tokens = new JSONTokener(new FileReader(path));\r\n            JSONArray items = new JSONArray(tokens);\r\n            for (int i = 0; i < items.length(); i++) {\r\n                JSONObject item = items.getJSONObject(i);\r\n                tempArrayList.add(new Item(item.getString(\"item_name\"), item.getInt(\"amount\"), item.getDouble(\"price\")));\r\n            }\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n        } catch (JSONException e) {\r\n            throw new RuntimeException(e);\r\n        }\r\n        return tempArrayList;\r\n    }\r\n\r\n\r\n\r\n    /*\r\n\r\n    Місце для методів іри і не кроку вгору до мого коду\r\n\r\n    */\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Program.java b/src/Program.java
+--- a/src/Program.java	
++++ b/src/Program.java	
+@@ -73,7 +73,7 @@
+         add_item = Styles.buttonNormalization(new JButton("Add item"));
+         add_item.addActionListener(this::addItemActionPerformed);
+         stats = Styles.buttonNormalization(new JButton("Statistics"));
+-
++        stats.addActionListener(this::statistic);
+         s = new JPanel();
+         a = new JPanel();
+         st = new JPanel();
+@@ -289,6 +289,42 @@
+         }
+         return tempArrayList;
+     }
++    private void statistic(ActionEvent e){
++        double total=0;
++
++        JFrame stFrame= new JFrame();
++        stFrame.setSize(1000,700);
++        stFrame.setTitle("Statistic");
++        stFrame.setResizable(false);
++        File[] files = new File(".\\item_groups").listFiles();
++        stFrame.setLayout(new GridLayout(files.length,1));
++        for(File f:files){
++            double totGr=0;
++            JPanel group = new JPanel(new BorderLayout());
++            JLabel name=new JLabel(f.getName());
++                   name.setHorizontalAlignment(JLabel.CENTER);
++            group.add(name,BorderLayout.NORTH);
++            ArrayList<Item>items=readJSON(f.getName());
++            JPanel it=new JPanel(new GridLayout(items.size(), 2));
++            for (Item item:items){
++                it.add(item.getPanel());
++                double res= item.amount*item.price;
++                totGr+=res;
++                String pr= res+" $";
++                it.add(new JLabel(pr));
++            }
++            group.add(it,BorderLayout.CENTER);
++            JLabel priceInGr=new JLabel("Ціна всіх товарів у групі: "+totGr+" $");
++            priceInGr.setHorizontalAlignment(JLabel.CENTER);
++            group.add(priceInGr,BorderLayout.WEST);
++            stFrame.add(group);
++            total+=totGr;
++        }
++        JLabel totalPrice= new JLabel("Сумарна ціна всіх товарів на складі: "+total+" $");
++        totalPrice.setHorizontalAlignment(JLabel.CENTER);
++        stFrame.add(totalPrice);
++        stFrame.setVisible(true);
++    }
+ 
+ 
+ 
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"f87a5624-665c-46ac-93da-6b5013d5f704\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/item_groups/Baking.json\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/item_groups/Baking.json\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Program.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Program.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Run.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Run.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/Styles.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/Styles.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_BRANCH_BY_REPOSITORY\">\r\n      <map>\r\n        <entry key=\"$PROJECT_DIR$\" value=\"ira\" />\r\n      </map>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n    <option name=\"RESET_MODE\" value=\"MIXED\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2NwyJ2jFFIRQqB6k0koFa91CG6n\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,\r\n    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,\r\n    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,\r\n    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,\r\n    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,\r\n    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,\r\n    &quot;last_opened_file_path&quot;: &quot;D:/code/code_wow/lib/org.json.jar&quot;,\r\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\r\n    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,\r\n    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,\r\n    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"D:\\code\\code_wow\\2 trimester\\main\\Lab2_\\out\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"f87a5624-665c-46ac-93da-6b5013d5f704\" name=\"Changes\" comment=\"\" />\r\n      <created>1680589367016</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1680589367016</updated>\r\n      <workItem from=\"1680589369344\" duration=\"17852000\" />\r\n      <workItem from=\"1680621743582\" duration=\"11526000\" />\r\n      <workItem from=\"1680685520268\" duration=\"9233000\" />\r\n      <workItem from=\"1680771736269\" duration=\"27000\" />\r\n      <workItem from=\"1680773103557\" duration=\"634000\" />\r\n      <workItem from=\"1680788100699\" duration=\"1627000\" />\r\n      <workItem from=\"1680792655368\" duration=\"8000\" />\r\n      <workItem from=\"1680797730649\" duration=\"54000\" />\r\n      <workItem from=\"1680874356566\" duration=\"1598000\" />\r\n      <workItem from=\"1680900674326\" duration=\"569000\" />\r\n      <workItem from=\"1681312141558\" duration=\"3275000\" />\r\n      <workItem from=\"1681379165117\" duration=\"2611000\" />\r\n      <workItem from=\"1681381982690\" duration=\"545000\" />\r\n      <workItem from=\"1681389746427\" duration=\"5560000\" />\r\n      <workItem from=\"1681414279126\" duration=\"7580000\" />\r\n      <workItem from=\"1681504223807\" duration=\"27590000\" />\r\n      <workItem from=\"1681585502112\" duration=\"95000\" />\r\n      <workItem from=\"1681585614379\" duration=\"11744000\" />\r\n      <workItem from=\"1681623781713\" duration=\"16745000\" />\r\n      <workItem from=\"1681729449909\" duration=\"210000\" />\r\n      <workItem from=\"1681814812922\" duration=\"7765000\" />\r\n      <workItem from=\"1681836174655\" duration=\"17176000\" />\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/Item.java</url>\r\n          <line>177</line>\r\n          <option name=\"timeStamp\" value=\"6\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/Item.java</url>\r\n          <line>178</line>\r\n          <option name=\"timeStamp\" value=\"8\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/Item.java</url>\r\n          <line>194</line>\r\n          <option name=\"timeStamp\" value=\"9\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" type=\"java-line\">\r\n          <url>file://$PROJECT_DIR$/src/Program.java</url>\r\n          <line>193</line>\r\n          <option name=\"timeStamp\" value=\"12\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	
++++ b/.idea/workspace.xml	
+@@ -1,12 +1,15 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="AutoImportSettings">
++    <option name="autoReloadType" value="SELECTIVE" />
++  </component>
+   <component name="ChangeListManager">
+     <list default="true" id="f87a5624-665c-46ac-93da-6b5013d5f704" name="Changes" comment="">
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/item_groups/Baking.json" beforeDir="false" afterPath="$PROJECT_DIR$/item_groups/Baking.json" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/Lab2_.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Lab2_.iml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/item_groups/Hygiene.json" beforeDir="false" afterPath="$PROJECT_DIR$/item_groups/Hygiene.json" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Program.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Run.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Run.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/Styles.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Styles.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -38,30 +41,48 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent">{
+-  &quot;keyToString&quot;: {
+-    &quot;Downloaded.Files.Path.Enabled&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.Annotations&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.JavaDocs&quot;: &quot;false&quot;,
+-    &quot;Repository.Attach.Sources&quot;: &quot;false&quot;,
+-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+-    &quot;extract.method.default.visibility&quot;: &quot;private&quot;,
+-    &quot;full.screen.before.presentation.mode&quot;: &quot;false&quot;,
+-    &quot;last_opened_file_path&quot;: &quot;D:/code/code_wow/lib/org.json.jar&quot;,
+-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+-    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.fileTypes&quot;
++  <component name="PropertiesComponent"><![CDATA[{
++  "keyToString": {
++    "Downloaded.Files.Path.Enabled": "false",
++    "Repository.Attach.Annotations": "false",
++    "Repository.Attach.JavaDocs": "false",
++    "Repository.Attach.Sources": "false",
++    "RunOnceActivity.OpenProjectViewOnStart": "true",
++    "RunOnceActivity.ShowReadmeOnStart": "true",
++    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
++    "WebServerToolWindowFactoryState": "false",
++    "extract.method.default.visibility": "private",
++    "full.screen.before.presentation.mode": "false",
++    "last_opened_file_path": "C:/Users/HP/org.json.jar",
++    "node.js.detected.package.eslint": "true",
++    "node.js.selected.package.eslint": "(autodetect)",
++    "node.js.selected.package.tslint": "(autodetect)",
++    "nodejs_package_manager_path": "npm",
++    "project.structure.last.edited": "Libraries",
++    "project.structure.proportion": "0.15",
++    "project.structure.side.proportion": "0.2",
++    "settings.editor.selected.configurable": "preferences.fileTypes",
++    "vue.rearranger.settings.migration": "true"
+   }
+-}</component>
++}]]></component>
+   <component name="RecentsManager">
+     <key name="MoveFile.RECENT_KEYS">
+       <recent name="D:\code\code_wow\2 trimester\main\Lab2_\out" />
+     </key>
++  </component>
++  <component name="RunManager">
++    <configuration name="Run" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
++      <option name="MAIN_CLASS_NAME" value="Run" />
++      <module name="Lab2_" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <recent_temporary>
++      <list>
++        <item itemvalue="Application.Run" />
++      </list>
++    </recent_temporary>
+   </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+@@ -93,6 +114,9 @@
+       <workItem from="1681729449909" duration="210000" />
+       <workItem from="1681814812922" duration="7765000" />
+       <workItem from="1681836174655" duration="17176000" />
++      <workItem from="1681915510667" duration="128000" />
++      <workItem from="1681915657240" duration="148000" />
++      <workItem from="1681915822282" duration="4497000" />
+     </task>
+     <servers />
+   </component>
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_19\" project-jdk-name=\"openjdk-20\" project-jdk-type=\"JavaSDK\">\r\n    <output url=\"file://$PROJECT_DIR$/out\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	
++++ b/.idea/misc.xml	
+@@ -1,6 +1,6 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" project-jdk-name="openjdk-20" project-jdk-type="JavaSDK">
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" project-jdk-name="19" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: Lab2_.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<module type=\"JAVA_MODULE\" version=\"4\">\r\n  <component name=\"NewModuleRootManager\" inherit-compiler-output=\"true\">\r\n    <exclude-output />\r\n    <content url=\"file://$MODULE_DIR$\">\r\n      <sourceFolder url=\"file://$MODULE_DIR$/src\" isTestSource=\"false\" />\r\n    </content>\r\n    <orderEntry type=\"inheritedJdk\" />\r\n    <orderEntry type=\"sourceFolder\" forTests=\"false\" />\r\n    <orderEntry type=\"library\" name=\"gson-2.2\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"json-simple-1.1.1\" level=\"project\" />\r\n    <orderEntry type=\"library\" name=\"org.json\" level=\"project\" />\r\n  </component>\r\n</module>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/Lab2_.iml b/Lab2_.iml
+--- a/Lab2_.iml	
++++ b/Lab2_.iml	
+@@ -10,5 +10,6 @@
+     <orderEntry type="library" name="gson-2.2" level="project" />
+     <orderEntry type="library" name="json-simple-1.1.1" level="project" />
+     <orderEntry type="library" name="org.json" level="project" />
++    <orderEntry type="library" name="org.json1" level="project" />
+   </component>
+ </module>
+\ No newline at end of file
