@@ -14,6 +14,7 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -49,10 +50,10 @@ public class Program extends JFrame {
         tabbedPane = new JTabbedPane();
         tabs = new TreeSet<>();
         File[] files = new File(".\\item_groups").listFiles();
+        assert files != null;
         for (File f : files) {
             tabs.add(f.getName());
         }
-        System.out.println(files);
         int mda = 0;
         for (String tab : tabs) {
             createTab(tab);
@@ -197,8 +198,25 @@ public class Program extends JFrame {
                     String price = txtPrice.getText();
                     File[] files = new File(".\\item_groups").listFiles();
                     if (!itemName.isEmpty() && !amount.isEmpty() && !price.isEmpty() && files != null) {
-                        File file = files[tabbedPane.getSelectedIndex()];
+                        String fileName = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+                        System.out.println(fileName);
+                        File file = null;
+                        int index = 0;
+                        while(index < files.length) {
+                            if(files[index].getName().equals(fileName+".json")) {
+                                file = files[index];
+                                break;
+                            }
+                            index++;
+                        }
+
+                        System.out.println(file);
+
+                        System.out.println();
+                        System.out.println(tabbedPane.getSelectedIndex());
+
                         newItem = new Item(itemName, Integer.parseInt(amount), Double.parseDouble(price));
+                        assert file != null;
                         newItem.addItemIntoJSON(file.getAbsolutePath());
                         JPanel panel = items_list.get(tabbedPane.getSelectedIndex());
 
@@ -248,29 +266,42 @@ public class Program extends JFrame {
     public void deleteGroupActionPerformed(ActionEvent e) {
         int response = JOptionPane.showConfirmDialog(this.getParent(), "Do you want to delete the current group of items?", "Delete?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
         if (response == JOptionPane.YES_OPTION) {
-            int selectedIndex = tabbedPane.getSelectedIndex();
-            if (selectedIndex >= 0 && selectedIndex < tabbedPane.getTabCount()) {
+            File[] filess = new File("item_groups").listFiles();
+            int selectedIndex = 0;
+            String fileNamee = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+            while(true) {
+                assert filess != null;
+                if (!(selectedIndex < filess.length)) break;
+                if(filess[selectedIndex].getName().equals(fileNamee+".json")) {
+                    break;
+                }
+                selectedIndex++;
+            }
+            if (selectedIndex < tabbedPane.getTabCount()) {
                 File[] files = new File("item_groups").listFiles();
                 if (files != null && selectedIndex < files.length) {
                     try {
-                        Files.deleteIfExists(Paths.get(files[selectedIndex].getPath()));
-                        System.out.println("File was deleted");
-                        items_list.remove(selectedIndex);
-                        tabbedPane.remove(selectedIndex);
-                    } catch (IOException ex) {
-                        System.out.println("Failed to delete file");
-                    }
-                } else {
-                    System.out.println("Invalid index or item_groups directory is empty");
-                }
-            } else {
-                System.out.println("Invalid selected index");
-            }
+                        String fileName = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+                        System.out.println(fileName);
+                        int index = 0;
+                        while(index < files.length) {
+                            if(files[index].getName().equals(fileName+".json")) {
+                                System.out.println(index);
+                                File file = files[index];
+                                System.out.println(file.getAbsolutePath());
+                                items_list.remove(selectedIndex);
+                                tabbedPane.remove(selectedIndex);
+                                Files.deleteIfExists(Paths.get(file.getAbsolutePath()));
+                                System.out.println("File was deleted");
+                                break;
+                            }
+                            index++;
+                        }
+                    } catch (IOException ex) {System.out.println("Failed to delete file");}
+                } else {System.out.println("Invalid index or item_groups directory is empty");}
+            } else {System.out.println("Invalid selected index");}
         } else if (response == JOptionPane.NO_OPTION) {
-            // Do nothing
-        } else if (response == JOptionPane.CLOSED_OPTION) {
-            System.out.println("JOptionPane closed");
-        }
+        } else if (response == JOptionPane.CLOSED_OPTION) {System.out.println("JOptionPane closed");}
     }
 
     public ArrayList<Item> readJSON(String path) {
