@@ -289,8 +289,8 @@ public class Program extends JFrame {
                                 System.out.println(index);
                                 File file = files[index];
                                 System.out.println(file.getAbsolutePath());
-                                items_list.remove(selectedIndex);
-                                tabbedPane.remove(selectedIndex);
+                                items_list.remove(tabbedPane.getSelectedIndex());
+                                tabbedPane.remove(tabbedPane.getSelectedIndex());
                                 Files.deleteIfExists(Paths.get(file.getAbsolutePath()));
                                 System.out.println("File was deleted");
                                 break;
