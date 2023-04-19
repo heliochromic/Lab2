@@ -13,10 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 
 public class Program extends JFrame {
@@ -307,17 +304,19 @@ public class Program extends JFrame {
 
     public ArrayList<Item> readJSON(String path) {
         ArrayList<Item> tempArrayList = new ArrayList<>();
-        try {
-            JSONTokener tokens = new JSONTokener(new FileReader(path));
-            JSONArray items = new JSONArray(tokens);
-            for (int i = 0; i < items.length(); i++) {
-                JSONObject item = items.getJSONObject(i);
-                tempArrayList.add(new Item(item.getString("item_name"), item.getInt("amount"), item.getDouble("price")));
+        if ((new File(path)).length() > 0){
+            try {
+                JSONTokener tokens = new JSONTokener(new FileReader(path));
+                JSONArray items = new JSONArray(tokens);
+                for (int i = 0; i < items.length(); i++) {
+                    JSONObject item = items.getJSONObject(i);
+                    tempArrayList.add(new Item(item.getString("item_name"), item.getInt("amount"), item.getDouble("price")));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
         }
         return tempArrayList;
     }
@@ -327,15 +326,17 @@ public class Program extends JFrame {
         frameSt.setTitle("Statistic");
         frameSt.setSize(1000,700);
         frameSt.setResizable(false);
-        File[] files=new File(".\\item_groups").listFiles();
-        frameSt.setLayout(new GridLayout(files.length+1, 1));
+        File[] files=new File("item_groups").listFiles();
+        frameSt.setLayout(new GridLayout(Objects.requireNonNull(files).length+1, 1));
         for(File f: files){
             double totalGr=0;
             JPanel  group = new JPanel(new BorderLayout());
             JLabel name = new JLabel(f.getName());
             name.setHorizontalAlignment(JLabel.HORIZONTAL);
             group.add(name,BorderLayout.NORTH);
+            System.out.println(f.getAbsolutePath());
             ArrayList<Item> items= readJSON(f.getAbsolutePath());
+            System.out.println(items);
             JPanel it = new JPanel(new GridLayout(items.size(), 2));
             for(Item item: items){
                 it.add(item.getPanel());
