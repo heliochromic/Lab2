@@ -28,6 +28,7 @@ public class Program extends JFrame {
         this.setName("vidrah?");
         setSize(1000, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
         setResizable(false);
         init();
         setVisible(true);
@@ -166,7 +167,7 @@ public class Program extends JFrame {
         for (File f : Objects.requireNonNull(filessss)) {
             allItems.addAll(readJSON(f.getAbsolutePath()));
         }
-        new SearchBarFrame(allItems).setSize(new Dimension(700,600));
+        new SearchBarFrame(allItems).setSize(new Dimension(850,600));
     }
 
     private void addItemActionPerformed(ActionEvent e) {
@@ -174,6 +175,7 @@ public class Program extends JFrame {
         newFrame.setTitle("New Frame");
         newFrame.setSize(300, 180);
         newFrame.setResizable(false);
+        setLocationRelativeTo(null);
 
         newFrame.setLayout(new GridLayout(4, 2, 10, 10));
 

@@ -66,7 +66,7 @@ public class Item {
         this.amount++;
         this.amountL.setText(String.valueOf(amount));
         System.out.println("buy");
-        panel.getParent().repaint();
+        this.panel.getParent().repaint();
     }
 
     private void editActionPerformed(ActionEvent e) {
@@ -108,6 +108,7 @@ public class Item {
         } catch (FileNotFoundException | JSONException ex) {
             throw new RuntimeException(ex);
         }
+        this.panel.getParent().repaint();
     }
 
     private void deleteActionPerformed(ActionEvent e) {
@@ -129,6 +130,7 @@ public class Item {
                 System.out.println("JOptionPane closed");
             }
         }
+        this.panel.getParent().repaint();
     }
 
     public void addItemIntoJSON(String fileName) {
