@@ -346,45 +346,6 @@ public class Program extends JFrame {
         frameSt.setTitle("Statistic");
         frameSt.setSize(1000, 700);
         frameSt.setResizable(false);
-        File[] files = new File("item_groups").listFiles();
-        frameSt.setLayout(new GridLayout(Objects.requireNonNull(files).length + 1, 1));
-        for (File f : files) {
-            double totalGr = 0;
-            JPanel group = new JPanel(new BorderLayout());
-            JLabel name = new JLabel(f.getName());
-            name.setHorizontalAlignment(JLabel.HORIZONTAL);
-            group.add(name, BorderLayout.NORTH);
-            System.out.println(f.getAbsolutePath());
-            ArrayList<Item> items = readJSON(f.getAbsolutePath());
-            System.out.println(items);
-            JPanel it = new JPanel(new GridLayout(items.size(), 2));
-            for (Item item : items) {
-                it.add(item.getPanel());
-                double res = item.getPrice() * item.getAmount();
-                it.add(new JLabel(res + " $"));
-                totalGr += res;
-            }
-            group.add(it, BorderLayout.CENTER);
-            JLabel totGr = new JLabel("Загальна вартість продуктів у групі: " + totalGr + " $");
-            total += totalGr;
-            totGr.setHorizontalAlignment(JLabel.HORIZONTAL);
-            group.add(totGr, BorderLayout.SOUTH);
-            frameSt.add(group);
-            JLabel totalPrice = new JLabel("Сумарна вартість товарів на складі: " + total + " $");
-            totalPrice.setHorizontalAlignment(JLabel.HORIZONTAL);
-            frameSt.add(totalPrice);
-        }
-        frameSt.setVisible(true);
-    }
-
-
-
-    private void statistic(ActionEvent e) {
-        double total = 0;
-        JFrame frameSt = new JFrame();
-        frameSt.setTitle("Statistic");
-        frameSt.setSize(1000, 700);
-        frameSt.setResizable(false);
         JPanel contentPane = new JPanel(new GridLayout());
         //  contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         JScrollPane scrollPane = new JScrollPane(contentPane);
