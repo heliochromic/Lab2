@@ -1,0 +1,181 @@
+Index: src/Program.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import org.json.JSONArray;\r\nimport org.json.JSONException;\r\nimport org.json.JSONObject;\r\nimport org.json.JSONTokener;\r\n\r\nimport javax.swing.*;\r\nimport java.awt.*;\r\nimport java.awt.event.ActionEvent;\r\nimport java.io.File;\r\nimport java.io.FileReader;\r\nimport java.io.IOException;\r\nimport java.nio.file.Files;\r\nimport java.nio.file.Paths;\r\nimport java.util.*;\r\n\r\n\r\npublic class Program extends JFrame {\r\n\r\n    JPanel scrollPanel, buttonPanel, backgroundPanel, s, a, st;\r\n    ArrayList<JPanel> items_list = new ArrayList<>();\r\n    JButton search, add_group, delete_group, add_item, stats;\r\n    JTabbedPane tabbedPane;\r\n    GridBagLayout layout;\r\n    GridBagConstraints constraints;\r\n    Set<String> tabs;\r\n\r\n    public Program() {\r\n        this.setName(\"vidrah?\");\r\n        setSize(1000, 700);\r\n        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);\r\n        setLocationRelativeTo(null);\r\n        setResizable(false);\r\n        init();\r\n        setVisible(true);\r\n    }\r\n\r\n    private static JLabel createLabel(String text, int width) {\r\n        JLabel label = new JLabel(text);\r\n        label.setPreferredSize(new Dimension(width, 30));\r\n        return label;\r\n    }\r\n\r\n\r\n    private void init() {\r\n\r\n        tabbedPane = new JTabbedPane();\r\n        tabs = new TreeSet<>();\r\n        File[] files = new File(\".\\\\item_groups\").listFiles();\r\n        assert files != null;\r\n        for (File f : files) {\r\n            tabs.add(f.getName());\r\n        }\r\n        int mda = 0;\r\n        for (String tab : tabs) {\r\n            createTab(tab);\r\n            tabbedPane.add(tab.split(\"\\\\.\")[0], items_list.get(mda));\r\n            mda++;\r\n        }\r\n        //JSONToArray(\".\\\\item_groups\\\\Baking.json\");\r\n        scrollPanel = new JPanel();\r\n        scrollPanel.setPreferredSize(new Dimension((int) (this.getWidth() * 0.88), this.getHeight()));\r\n\r\n        scrollPanel.add(tabbedPane);\r\n\r\n        search = Styles.buttonNormalization(new JButton(\"Search\"));\r\n        search.addActionListener(this::searchActionPerformed);\r\n        add_group = Styles.buttonNormalization(new JButton(\"Add group\"));\r\n        add_group.addActionListener(this::addGroupActionPerformed);\r\n        delete_group = Styles.buttonNormalization(new JButton(\"Delete group\"));\r\n        delete_group.addActionListener(this::deleteGroupActionPerformed);\r\n        add_item = Styles.buttonNormalization(new JButton(\"Add item\"));\r\n        add_item.addActionListener(this::addItemActionPerformed);\r\n        stats = Styles.buttonNormalization(new JButton(\"Statistics\"));\r\n        stats.addActionListener(this::statistic);\r\n\r\n        s = new JPanel();\r\n        a = new JPanel();\r\n        st = new JPanel();\r\n\r\n        s.add(search);\r\n        a.add(add_group);\r\n        a.add(delete_group);\r\n        a.add(add_item);\r\n        st.add(stats);\r\n\r\n        buttonPanel = new JPanel(new GridLayout(7, 1));\r\n        buttonPanel.setBackground(new Color(66, 48, 132));\r\n        buttonPanel.setPreferredSize(new Dimension(((int) (this.getWidth() * 0.3)), this.getHeight()));\r\n        buttonPanel.add(new JLabel(\"\"));\r\n        buttonPanel.add(search);\r\n        buttonPanel.add(add_group);\r\n        buttonPanel.add(delete_group);\r\n        buttonPanel.add(add_item);\r\n        buttonPanel.add(stats);\r\n\r\n        buttonPanel.setBorder(BorderFactory.createEmptyBorder(40, 10, 20, 10));\r\n\r\n        layout = new GridBagLayout();\r\n        constraints = new GridBagConstraints();\r\n        constraints.fill = GridBagConstraints.BOTH;\r\n        constraints.weightx = 0.8;\r\n        constraints.insets = new Insets(0, 0, 0, 0);\r\n        layout.setConstraints(scrollPanel, constraints);\r\n        constraints.weightx = 0.2;\r\n        layout.setConstraints(buttonPanel, constraints);\r\n\r\n        backgroundPanel = new JPanel(layout);\r\n        backgroundPanel.add(scrollPanel);\r\n        backgroundPanel.add(buttonPanel);\r\n        this.getContentPane().add(backgroundPanel);\r\n        this.pack();\r\n    }\r\n\r\n\r\n    public void createTab(String name) {\r\n        String filename = \"\";\r\n        try {\r\n            try {\r\n                if (name.split(\"\\\\.\")[1].equals(\"json\")) filename = \".\\\\item_groups\\\\\" + name;\r\n            } catch (ArrayIndexOutOfBoundsException ex) {\r\n                filename = \".\\\\item_groups\\\\\" + name + \".json\";\r\n            }\r\n            File f = new File(filename);\r\n            if (f.createNewFile()) System.out.println(\"New \" + filename + \" was created\");\r\n            else System.out.println(\"File already exists.\");\r\n        } catch (IOException e) {\r\n            System.out.println(\"damn\");\r\n            e.printStackTrace();\r\n        }\r\n        items_list.add(createScrollableTable(filename));\r\n    }\r\n\r\n    public JPanel createScrollableTable(String filename) {\r\n        JPanel headerRow = new JPanel(new GridLayout(1, 5));\r\n        JPanel div = new JPanel(new GridLayout(0, 1));\r\n        headerRow.setPreferredSize(new Dimension(div.getWidth(), 50));\r\n        headerRow.add(createLabel(\"Item Name\", 60));\r\n        headerRow.add(createLabel(\"Amount\", 10));\r\n        headerRow.add(createLabel(\"Price\", 30));\r\n        headerRow.add(new JPanel());\r\n\r\n        div.add(headerRow, BorderLayout.NORTH);\r\n        div.add(headerRow, BorderLayout.NORTH);\r\n\r\n        if (new File(filename).length() > 0) {\r\n            ArrayList<Item> items = readJSON(filename);\r\n            for (Item item : items) {\r\n                if (!Item.uniqueNames.contains(item.getName().strip())) {\r\n                    div.add(item.getPanel());\r\n                    Item.uniqueNames.add(item.getName().strip());\r\n                }\r\n            }\r\n        }\r\n\r\n\r\n        JScrollPane scrollPane = new JScrollPane(div);\r\n        scrollPane.setPreferredSize(new Dimension(850, 670));\r\n        JPanel p = new JPanel();\r\n        p.add(scrollPane);\r\n        return p;\r\n    }\r\n\r\n    private void searchActionPerformed(ActionEvent e) {\r\n        ArrayList<Item> allItems = new ArrayList<>();\r\n        File[] filessss = new File(\"item_groups\").listFiles();\r\n        System.out.println(Arrays.toString(filessss));\r\n        for (File f : Objects.requireNonNull(filessss)) {\r\n            allItems.addAll(readJSON(f.getAbsolutePath()));\r\n        }\r\n        new SearchBarFrame(allItems).setSize(new Dimension(850,600));\r\n    }\r\n\r\n    private void addItemActionPerformed(ActionEvent e) {\r\n        JFrame newFrame = new JFrame();\r\n        newFrame.setTitle(\"New Frame\");\r\n        newFrame.setSize(300, 180);\r\n        newFrame.setResizable(false);\r\n        setLocationRelativeTo(null);\r\n\r\n        newFrame.setLayout(new GridLayout(4, 2, 10, 10));\r\n\r\n        JLabel lblItemName = new JLabel(\"Item Name:\");\r\n        JTextField txtItemName = new JTextField();\r\n        newFrame.add(lblItemName);\r\n        newFrame.add(txtItemName);\r\n\r\n        JLabel lblAmount = new JLabel(\"Amount:\");\r\n        JTextField txtAmount = new JTextField();\r\n        newFrame.add(lblAmount);\r\n        newFrame.add(txtAmount);\r\n\r\n        JLabel lblPrice = new JLabel(\"Price:\");\r\n        JTextField txtPrice = new JTextField();\r\n        newFrame.add(lblPrice);\r\n        newFrame.add(txtPrice);\r\n\r\n        newFrame.add(new JLabel());\r\n        JButton btnSave = new JButton(\"Save\");\r\n        Styles.tabsButtonNormalization(btnSave);\r\n        btnSave.addActionListener(e1 -> {\r\n            Item newItem;\r\n            try {\r\n                String itemName = txtItemName.getText();\r\n                if (!Item.uniqueNames.contains(itemName)) {\r\n                    Item.uniqueNames.add(itemName);\r\n                    String amount = txtAmount.getText();\r\n                    String price = txtPrice.getText();\r\n                    File[] files = new File(\".\\\\item_groups\").listFiles();\r\n                    if (!itemName.isEmpty() && !amount.isEmpty() && !price.isEmpty() && files != null) {\r\n                        String fileName = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());\r\n                        System.out.println(fileName);\r\n                        File file = null;\r\n                        int index = 0;\r\n                        while (index < files.length) {\r\n                            if (files[index].getName().equals(fileName + \".json\")) {\r\n                                file = files[index];\r\n                                break;\r\n                            }\r\n                            index++;\r\n                        }\r\n\r\n                        System.out.println(file);\r\n\r\n                        System.out.println();\r\n                        System.out.println(tabbedPane.getSelectedIndex());\r\n\r\n                        newItem = new Item(itemName, Integer.parseInt(amount), Double.parseDouble(price));\r\n                        assert file != null;\r\n                        newItem.addItemIntoJSON(file.getAbsolutePath());\r\n                        JPanel panel = items_list.get(tabbedPane.getSelectedIndex());\r\n\r\n                        JScrollPane scrollPane = (JScrollPane) panel.getComponent(0);\r\n                        JPanel div = (JPanel) scrollPane.getViewport().getView();\r\n                        div.add(newItem.getPanel());\r\n                        panel.revalidate();\r\n                        panel.repaint();\r\n                    }\r\n                } else {\r\n                    JOptionPane.showMessageDialog(newFrame, \"This product already exists in lists\", \"Error\", JOptionPane.ERROR_MESSAGE);\r\n                }\r\n            } catch (NumberFormatException ex) {\r\n                JOptionPane.showMessageDialog(newFrame, \"Please fill in all the fields.\", \"Error\", JOptionPane.ERROR_MESSAGE);\r\n                txtItemName.setText(\"\");\r\n                txtAmount.setText(\"\");\r\n                txtPrice.setText(\"\");\r\n            }\r\n            newFrame.dispose();\r\n        });\r\n        newFrame.add(btnSave);\r\n        newFrame.setVisible(true);\r\n    }\r\n\r\n    private void addGroupActionPerformed(ActionEvent e) {\r\n        int response = JOptionPane.showConfirmDialog(this.getParent(), \"Чи хочете ви додати нову групу товарів?\", \"Add?\",\r\n                JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);\r\n        if (response == JOptionPane.NO_OPTION) {\r\n        } else if (response == JOptionPane.YES_OPTION) {\r\n            String newGroup = JOptionPane.showInputDialog(this.getParent(), \"Введіть нову назву: \");\r\n            if (!tabs.contains(newGroup + \".json\")) {\r\n                if (newGroup.strip().length() > 0) {\r\n                    createTab(newGroup);\r\n                    tabs.add(newGroup);\r\n                    tabbedPane.add(newGroup, items_list.get(items_list.size() - 1));\r\n                } else {\r\n                    JOptionPane.showMessageDialog(this.getParent(), \"Стрічка пуста, спробуйте ще раз\");\r\n                }\r\n            } else {\r\n                JOptionPane.showMessageDialog(this.getParent(), \"Така групу товарів вже існує, спробуйте ще раз\");\r\n            }\r\n        } else if (response == JOptionPane.CLOSED_OPTION) {\r\n            System.out.println(\"JOptionPane closed\");\r\n        }\r\n    }\r\n\r\n    public void deleteGroupActionPerformed(ActionEvent e) {\r\n        int response = JOptionPane.showConfirmDialog(this.getParent(), \"Do you want to delete the current group of items?\", \"Delete?\", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);\r\n        if (response == JOptionPane.YES_OPTION) {\r\n            File[] filess = new File(\"item_groups\").listFiles();\r\n            int selectedIndex = 0;\r\n            String fileNamee = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());\r\n            while (true) {\r\n                assert filess != null;\r\n                if (!(selectedIndex < filess.length)) break;\r\n                if (filess[selectedIndex].getName().equals(fileNamee + \".json\")) {\r\n                    break;\r\n                }\r\n                selectedIndex++;\r\n            }\r\n            if (selectedIndex < tabbedPane.getTabCount()) {\r\n                File[] files = new File(\"item_groups\").listFiles();\r\n                if (files != null && selectedIndex < files.length) {\r\n                    try {\r\n                        String fileName = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());\r\n                        System.out.println(fileName);\r\n                        int index = 0;\r\n                        while (index < files.length) {\r\n                            if (files[index].getName().equals(fileName + \".json\")) {\r\n                                System.out.println(index);\r\n                                File file = files[index];\r\n                                System.out.println(file.getAbsolutePath());\r\n                                items_list.remove(tabbedPane.getSelectedIndex());\r\n                                tabbedPane.remove(tabbedPane.getSelectedIndex());\r\n                                Files.deleteIfExists(Paths.get(file.getAbsolutePath()));\r\n                                System.out.println(\"File was deleted\");\r\n                                break;\r\n                            }\r\n                            index++;\r\n                        }\r\n                    } catch (IOException ex) {\r\n                        System.out.println(\"Failed to delete file\");\r\n                    }\r\n                } else {\r\n                    System.out.println(\"Invalid index or item_groups directory is empty\");\r\n                }\r\n            } else {\r\n                System.out.println(\"Invalid selected index\");\r\n            }\r\n        } else if (response == JOptionPane.NO_OPTION) {\r\n        } else if (response == JOptionPane.CLOSED_OPTION) {\r\n            System.out.println(\"JOptionPane closed\");\r\n        }\r\n    }\r\n\r\n    public ArrayList<Item> readJSON(String path) {\r\n        ArrayList<Item> tempArrayList = new ArrayList<>();\r\n        if ((new File(path)).length() > 0) {\r\n            try {\r\n                JSONTokener tokens = new JSONTokener(new FileReader(path));\r\n                JSONArray items = new JSONArray(tokens);\r\n                for (int i = 0; i < items.length(); i++) {\r\n                    JSONObject item = items.getJSONObject(i);\r\n                    tempArrayList.add(new Item(item.getString(\"item_name\"), item.getInt(\"amount\"), item.getDouble(\"price\")));\r\n                }\r\n            } catch (IOException e) {\r\n                e.printStackTrace();\r\n            } catch (JSONException e) {\r\n                throw new RuntimeException(e);\r\n            }\r\n        }\r\n        return tempArrayList;\r\n    }\r\n\r\n    private void statistic(ActionEvent e) {\r\n        double total = 0;\r\n        JFrame frameSt = new JFrame();\r\n        frameSt.setTitle(\"Statistic\");\r\n        frameSt.setSize(1000, 700);\r\n        frameSt.setResizable(false);\r\n        JPanel contentPane = new JPanel(new GridLayout());\r\n        //  contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));\r\n        JScrollPane scrollPane = new JScrollPane(contentPane);\r\n        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);\r\n        frameSt.setContentPane(scrollPane);\r\n        File[] files = new File(\"item_groups\").listFiles();\r\n        for (File f : files) {\r\n\r\n            double totalGr = 0;\r\n            JPanel group = new JPanel(new BorderLayout());\r\n            //  group.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));\r\n            JLabel name = new JLabel(f.getName());\r\n            name.setHorizontalAlignment(JLabel.HORIZONTAL);\r\n            group.add(name, BorderLayout.NORTH);\r\n            System.out.println(f.getAbsolutePath());\r\n            ArrayList<Item> items = readJSON(f.getAbsolutePath());\r\n            System.out.println(items);\r\n            if(items.isEmpty()){\r\n                JLabel empty = new JLabel(\"група не має жодних товарів\");\r\n                empty.setHorizontalAlignment(JLabel.HORIZONTAL);\r\n                group.add(empty, BorderLayout.CENTER);\r\n                contentPane.add(group);\r\n                continue;\r\n            }\r\n            JPanel it = new JPanel(new GridLayout(items.size(), 2));\r\n            for (Item item : items) {\r\n                JLabel itemOP=new JLabel(\"Назва товару: <\"+item.getName() +\"> Кількість : \"+item.getAmount()+\" Ціна за одиницю: \"+item.getPrice()+\" $\");\r\n                itemOP.setPreferredSize(new Dimension(700, 20));\r\n                it.add(itemOP);\r\n                double res = item.getPrice() * item.getAmount();\r\n                JLabel sc=new JLabel(\"Всього : \"+res + \" $\");\r\n                sc.setPreferredSize(new Dimension(300, 20));\r\n                it.add(sc);\r\n                totalGr += res;\r\n            }\r\n            group.add(it, BorderLayout.CENTER);\r\n            JLabel totGr = new JLabel(\"Загальна вартість продуктів у групі: \" + totalGr + \" $\");\r\n            total += totalGr;\r\n            totGr.setHorizontalAlignment(JLabel.HORIZONTAL);\r\n            group.add(totGr, BorderLayout.SOUTH);\r\n            contentPane.add(group);\r\n            group.setPreferredSize(new Dimension(950, (items.size() * 60) + 70));\r\n        }\r\n        JLabel totalPrice = new JLabel(\"Сумарна вартість товарів на складі: \" + total + \" $\");\r\n        totalPrice.setHorizontalAlignment(JLabel.HORIZONTAL);\r\n        totalPrice.setPreferredSize(new Dimension(950,20));\r\n        contentPane.add(totalPrice);\r\n        frameSt.setVisible(true);\r\n    }\r\n    /*\r\n\r\n    Місце для методів іри і не кроку вгору до мого коду\r\n\r\n    */\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/Program.java b/src/Program.java
+--- a/src/Program.java	(revision 4446aaeb1fd93d275fd1a34ace4347fc8420aab0)
++++ b/src/Program.java	(date 1681985980232)
+@@ -340,61 +340,116 @@
+         return tempArrayList;
+     }
+ 
+-    private void statistic(ActionEvent e) {
+-        double total = 0;
+-        JFrame frameSt = new JFrame();
+-        frameSt.setTitle("Statistic");
+-        frameSt.setSize(1000, 700);
+-        frameSt.setResizable(false);
+-        JPanel contentPane = new JPanel(new GridLayout());
+-        //  contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+-        JScrollPane scrollPane = new JScrollPane(contentPane);
+-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+-        frameSt.setContentPane(scrollPane);
+-        File[] files = new File("item_groups").listFiles();
+-        for (File f : files) {
++//    private void statistic(ActionEvent e) {
++//        double total = 0;
++//        JFrame frameSt = new JFrame();
++//        frameSt.setTitle("Statistic");
++//        frameSt.setSize(1000, 700);
++//        frameSt.setResizable(false);
++//        JPanel contentPane = new JPanel(new GridLayout());
++//        //  contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
++//        JScrollPane scrollPane = new JScrollPane(contentPane);
++//        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
++//        frameSt.setContentPane(scrollPane);
++//        File[] files = new File("item_groups").listFiles();
++//        for (File f : files) {
++//
++//            double totalGr = 0;
++//            JPanel group = new JPanel(new BorderLayout());
++//            //  group.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
++//            JLabel name = new JLabel(f.getName());
++//            name.setHorizontalAlignment(JLabel.HORIZONTAL);
++//            group.add(name, BorderLayout.NORTH);
++//            System.out.println(f.getAbsolutePath());
++//            ArrayList<Item> items = readJSON(f.getAbsolutePath());
++//            System.out.println(items);
++//            if(items.isEmpty()){
++//                JLabel empty = new JLabel("група не має жодних товарів");
++//                empty.setHorizontalAlignment(JLabel.HORIZONTAL);
++//                group.add(empty, BorderLayout.CENTER);
++//                contentPane.add(group);
++//                continue;
++//            }
++//            JPanel it = new JPanel(new GridLayout(items.size(), 2));
++//            for (Item item : items) {
++//                JLabel itemOP=new JLabel("Назва товару: <"+item.getName() +"> Кількість : "+item.getAmount()+" Ціна за одиницю: "+item.getPrice()+" $");
++//                itemOP.setPreferredSize(new Dimension(700, 20));
++//                it.add(itemOP);
++//                double res = item.getPrice() * item.getAmount();
++//                JLabel sc=new JLabel("Всього : "+res + " $");
++//                sc.setPreferredSize(new Dimension(300, 20));
++//                it.add(sc);
++//                totalGr += res;
++//            }
++//            group.add(it, BorderLayout.CENTER);
++//            JLabel totGr = new JLabel("Загальна вартість продуктів у групі: " + totalGr + " $");
++//            total += totalGr;
++//            totGr.setHorizontalAlignment(JLabel.HORIZONTAL);
++//            group.add(totGr, BorderLayout.SOUTH);
++//            contentPane.add(group);
++//            group.setPreferredSize(new Dimension(950, (items.size() * 60) + 70));
++//        }
++//        JLabel totalPrice = new JLabel("Сумарна вартість товарів на складі: " + total + " $");
++//        totalPrice.setHorizontalAlignment(JLabel.HORIZONTAL);
++//        totalPrice.setPreferredSize(new Dimension(950,20));
++//        contentPane.add(totalPrice);
++//        frameSt.setVisible(true);
++//    }
++private void statistic(ActionEvent e) {
++    double total = 0;
++    JFrame frameSt = new JFrame();
++    frameSt.setTitle("Statistic");
++    frameSt.setSize(1000, 700);
++    frameSt.setResizable(false);
++    JPanel contentPane = new JPanel(new GridLayout(0,1));
++    //  contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
++    JScrollPane scrollPane = new JScrollPane(contentPane);
++    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
++    frameSt.setContentPane(scrollPane);
++    File[] files = new File("item_groups").listFiles();
++    for (File f : files) {
+ 
+-            double totalGr = 0;
+-            JPanel group = new JPanel(new BorderLayout());
+-            //  group.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+-            JLabel name = new JLabel(f.getName());
+-            name.setHorizontalAlignment(JLabel.HORIZONTAL);
+-            group.add(name, BorderLayout.NORTH);
+-            System.out.println(f.getAbsolutePath());
+-            ArrayList<Item> items = readJSON(f.getAbsolutePath());
+-            System.out.println(items);
+-            if(items.isEmpty()){
+-                JLabel empty = new JLabel("група не має жодних товарів");
+-                empty.setHorizontalAlignment(JLabel.HORIZONTAL);
+-                group.add(empty, BorderLayout.CENTER);
+-                contentPane.add(group);
+-                continue;
+-            }
+-            JPanel it = new JPanel(new GridLayout(items.size(), 2));
+-            for (Item item : items) {
+-                JLabel itemOP=new JLabel("Назва товару: <"+item.getName() +"> Кількість : "+item.getAmount()+" Ціна за одиницю: "+item.getPrice()+" $");
+-                itemOP.setPreferredSize(new Dimension(700, 20));
+-                it.add(itemOP);
+-                double res = item.getPrice() * item.getAmount();
+-                JLabel sc=new JLabel("Всього : "+res + " $");
+-                sc.setPreferredSize(new Dimension(300, 20));
+-                it.add(sc);
+-                totalGr += res;
+-            }
+-            group.add(it, BorderLayout.CENTER);
+-            JLabel totGr = new JLabel("Загальна вартість продуктів у групі: " + totalGr + " $");
+-            total += totalGr;
+-            totGr.setHorizontalAlignment(JLabel.HORIZONTAL);
+-            group.add(totGr, BorderLayout.SOUTH);
+-            contentPane.add(group);
+-            group.setPreferredSize(new Dimension(950, (items.size() * 60) + 70));
+-        }
+-        JLabel totalPrice = new JLabel("Сумарна вартість товарів на складі: " + total + " $");
+-        totalPrice.setHorizontalAlignment(JLabel.HORIZONTAL);
+-        totalPrice.setPreferredSize(new Dimension(950,20));
+-        contentPane.add(totalPrice);
+-        frameSt.setVisible(true);
+-    }
++        double totalGr = 0;
++        JPanel group = new JPanel(new BorderLayout());
++        //  group.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
++        JLabel name = new JLabel(f.getName());
++        name.setHorizontalAlignment(JLabel.HORIZONTAL);
++        group.add(name, BorderLayout.NORTH);
++        System.out.println(f.getAbsolutePath());
++        ArrayList<Item> items = readJSON(f.getAbsolutePath());
++        System.out.println(items);
++        if(items.isEmpty()){
++            JLabel empty = new JLabel("група не має жодних товарів");
++            empty.setHorizontalAlignment(JLabel.HORIZONTAL);
++            group.add(empty, BorderLayout.CENTER);
++            contentPane.add(group);
++            continue;
++        }
++        JPanel it = new JPanel(new GridLayout(items.size(), 2));
++        for (Item item : items) {
++            JLabel itemOP=new JLabel("Назва товару: <"+item.getName() +"> Кількість : "+item.getAmount()+" Ціна за одиницю: "+item.getPrice()+" $");
++            itemOP.setPreferredSize(new Dimension(700, 20));
++            it.add(itemOP);
++            double res = item.getPrice() * item.getAmount();
++            JLabel sc=new JLabel("Всього : "+res + " $");
++            sc.setPreferredSize(new Dimension(300, 20));
++            it.add(sc);
++            totalGr += res;
++        }
++        group.add(it, BorderLayout.CENTER);
++        JLabel totGr = new JLabel("Загальна вартість продуктів у групі: " + totalGr + " $");
++        total += totalGr;
++        totGr.setHorizontalAlignment(JLabel.HORIZONTAL);
++        group.add(totGr, BorderLayout.SOUTH);
++        contentPane.add(group);
++        group.setPreferredSize(new Dimension(950, (items.size() * 60) + 70));
++    }
++    JLabel totalPrice = new JLabel("Сумарна вартість товарів на складі: " + total + " $");
++    totalPrice.setHorizontalAlignment(JLabel.HORIZONTAL);
++    totalPrice.setPreferredSize(new Dimension(950,20));
++    contentPane.add(totalPrice);
++    frameSt.setVisible(true);
++}
+     /*
+ 
+     Місце для методів іри і не кроку вгору до мого коду
