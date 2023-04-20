@@ -14,13 +14,13 @@ import java.util.regex.Pattern;
 
 public class Item {
     public static Set<String> uniqueNames = new HashSet<>();
+    private final JLabel nameL;
+    private final JLabel amountL;
+    private final JLabel priceL;
     JPanel panel, buttonPanel;
     String name;
     int amount;
     double price;
-    private final JLabel nameL;
-    private final JLabel amountL;
-    private final JLabel priceL;
 
     Item(String name, int amount, double price) {
         this.name = name;
@@ -56,7 +56,13 @@ public class Item {
     public JPanel getPanel() {
         return panel;
     }
+
     private void buyActionPerformed(ActionEvent e) {
+        try {
+            editJSONProperty("Кількість", String.valueOf(this.amount+1));
+        } catch (FileNotFoundException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
         this.amount++;
         this.amountL.setText(String.valueOf(amount));
         System.out.println("buy");
@@ -72,19 +78,15 @@ public class Item {
             if (answer.equals("Назва")) {
                 while (true) {
                     String newName = JOptionPane.showInputDialog(this.panel, "Введіть нову назву: ");
-                    if (!uniqueNames.contains(newName)){
+                    if (!uniqueNames.contains(newName)) {
                         if (newName.strip().length() > 0) {
                             editJSONProperty(answer, newName);
                             this.name = newName;
                             this.nameL.setText(newName);
                             panel.getParent().repaint();
                             break;
-                        } else {
-                            JOptionPane.showMessageDialog(this.panel, "Стрічка пуста, спробуйте ще раз");
-                        }
-                    } else {
-                        JOptionPane.showMessageDialog(this.panel, "Такий товар вже існує, на жаль, не можливо його додати ще раз");
-                    }
+                        } else {JOptionPane.showMessageDialog(this.panel, "Стрічка пуста, спробуйте ще раз");}
+                    } else {JOptionPane.showMessageDialog(this.panel, "Такий товар вже існує, на жаль, не можливо його додати ще раз");}
                 }
             } else if (answer.equals("Ціна")) {
                 while (true) {
@@ -110,6 +112,7 @@ public class Item {
 
     private void deleteActionPerformed(ActionEvent e) {
         if (this.amount > 1) {
+            try {editJSONProperty("Кількість", String.valueOf(this.amount-1));} catch (FileNotFoundException | JSONException ex) {throw new RuntimeException(ex);}
             this.amount--;
             this.amountL.setText(String.valueOf(amount));
             System.out.println("delete");
@@ -120,11 +123,7 @@ public class Item {
             if (response == JOptionPane.NO_OPTION) {
                 System.out.println("ok");
             } else if (response == JOptionPane.YES_OPTION) {
-                try {
-                    deleteJSONItem();
-                } catch (IOException | JSONException ex) {
-                    throw new RuntimeException(ex);
-                }
+                try {deleteJSONItem();} catch (IOException | JSONException ex) {throw new RuntimeException(ex);}
                 this.panel.getParent().remove(this.panel);
             } else if (response == JOptionPane.CLOSED_OPTION) {
                 System.out.println("JOptionPane closed");
@@ -164,9 +163,9 @@ public class Item {
         fileWriter.close();
     }
 
-    public void editJSONProperty (String key, String newValue) throws FileNotFoundException, JSONException {
+    public void editJSONProperty(String key, String newValue) throws FileNotFoundException, JSONException {
         File[] files = new File("item_groups").listFiles();
-        for (File file : Objects.requireNonNull(files)){
+        for (File file : Objects.requireNonNull(files)) {
             FileReader fileReader = new FileReader(file.getPath());
             System.out.println(file.getAbsolutePath());
             JSONTokener tokens = new JSONTokener(fileReader);
@@ -205,6 +204,23 @@ public class Item {
                         return;
                     }
                 }
+            } else if (key.equals("Кількість")) {
+                for (int i = 0; i < itemsArray.length(); i++) {
+                    JSONObject item = itemsArray.getJSONObject(i);
+                    System.out.println(item.getString("item_name") + " - " + newValue + " - " + this.getName());
+                    if (item.getString("item_name").equals(this.getName())) {
+                        item.put("amount", Integer.parseInt(newValue));
+                        try {
+                            FileWriter fileWriter = new FileWriter(file.getPath());
+                            fileWriter.write(itemsArray.toString());
+                            fileWriter.flush();
+                            fileWriter.close();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                        return;
+                    }
+                }
             }
         }
     }
@@ -216,22 +232,22 @@ public class Item {
             System.out.println(file.getAbsolutePath());
             JSONTokener tokens = new JSONTokener(fileReader);
             JSONArray itemsArray = new JSONArray(tokens);
-                for (int i = 0; i < itemsArray.length(); i++) {
-                    JSONObject item = itemsArray.getJSONObject(i);
-                    if (item.getString("item_name").equals(this.getName())) {
-                        itemsArray.remove(i);
+            for (int i = 0; i < itemsArray.length(); i++) {
+                JSONObject item = itemsArray.getJSONObject(i);
+                if (item.getString("item_name").equals(this.getName())) {
+                    itemsArray.remove(i);
 
-                        // Write the updated JSON data back to the file
-                        FileWriter fileWriter = new FileWriter(file.getPath());
-                        fileWriter.write(itemsArray.toString());
-                        fileWriter.flush();
-                        fileWriter.close();
+                    // Write the updated JSON data back to the file
+                    FileWriter fileWriter = new FileWriter(file.getPath());
+                    fileWriter.write(itemsArray.toString());
+                    fileWriter.flush();
+                    fileWriter.close();
 
-                        return;
-                    }
+                    return;
                 }
             }
         }
+    }
 
 
     public boolean isNumber(String input) {

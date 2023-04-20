@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -64,6 +62,7 @@ public class Program extends JFrame {
         scrollPanel.add(tabbedPane);
 
         search = Styles.buttonNormalization(new JButton("Search"));
+        search.addActionListener(this::searchActionPerformed);
         add_group = Styles.buttonNormalization(new JButton("Add group"));
         add_group.addActionListener(this::addGroupActionPerformed);
         delete_group = Styles.buttonNormalization(new JButton("Delete group"));
@@ -160,6 +159,16 @@ public class Program extends JFrame {
         return p;
     }
 
+    private void searchActionPerformed(ActionEvent e) {
+        ArrayList<Item> allItems = new ArrayList<>();
+        File[] filessss = new File("item_groups").listFiles();
+        System.out.println(Arrays.toString(filessss));
+        for (File f : Objects.requireNonNull(filessss)) {
+            allItems.addAll(readJSON(f.getAbsolutePath()));
+        }
+        new SearchBarFrame(allItems).setSize(new Dimension(700,600));
+    }
+
     private void addItemActionPerformed(ActionEvent e) {
         JFrame newFrame = new JFrame();
         newFrame.setTitle("New Frame");
@@ -200,8 +209,8 @@ public class Program extends JFrame {
                         System.out.println(fileName);
                         File file = null;
                         int index = 0;
-                        while(index < files.length) {
-                            if(files[index].getName().equals(fileName+".json")) {
+                        while (index < files.length) {
+                            if (files[index].getName().equals(fileName + ".json")) {
                                 file = files[index];
                                 break;
                             }
@@ -267,10 +276,10 @@ public class Program extends JFrame {
             File[] filess = new File("item_groups").listFiles();
             int selectedIndex = 0;
             String fileNamee = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
-            while(true) {
+            while (true) {
                 assert filess != null;
                 if (!(selectedIndex < filess.length)) break;
-                if(filess[selectedIndex].getName().equals(fileNamee+".json")) {
+                if (filess[selectedIndex].getName().equals(fileNamee + ".json")) {
                     break;
                 }
                 selectedIndex++;
@@ -282,8 +291,8 @@ public class Program extends JFrame {
                         String fileName = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
                         System.out.println(fileName);
                         int index = 0;
-                        while(index < files.length) {
-                            if(files[index].getName().equals(fileName+".json")) {
+                        while (index < files.length) {
+                            if (files[index].getName().equals(fileName + ".json")) {
                                 System.out.println(index);
                                 File file = files[index];
                                 System.out.println(file.getAbsolutePath());
@@ -295,16 +304,24 @@ public class Program extends JFrame {
                             }
                             index++;
                         }
-                    } catch (IOException ex) {System.out.println("Failed to delete file");}
-                } else {System.out.println("Invalid index or item_groups directory is empty");}
-            } else {System.out.println("Invalid selected index");}
+                    } catch (IOException ex) {
+                        System.out.println("Failed to delete file");
+                    }
+                } else {
+                    System.out.println("Invalid index or item_groups directory is empty");
+                }
+            } else {
+                System.out.println("Invalid selected index");
+            }
         } else if (response == JOptionPane.NO_OPTION) {
-        } else if (response == JOptionPane.CLOSED_OPTION) {System.out.println("JOptionPane closed");}
+        } else if (response == JOptionPane.CLOSED_OPTION) {
+            System.out.println("JOptionPane closed");
+        }
     }
 
     public ArrayList<Item> readJSON(String path) {
         ArrayList<Item> tempArrayList = new ArrayList<>();
-        if ((new File(path)).length() > 0){
+        if ((new File(path)).length() > 0) {
             try {
                 JSONTokener tokens = new JSONTokener(new FileReader(path));
                 JSONArray items = new JSONArray(tokens);
@@ -320,37 +337,38 @@ public class Program extends JFrame {
         }
         return tempArrayList;
     }
-    private void statistic(ActionEvent e){
-        double total=0;
-        JFrame frameSt= new JFrame();
+
+    private void statistic(ActionEvent e) {
+        double total = 0;
+        JFrame frameSt = new JFrame();
         frameSt.setTitle("Statistic");
-        frameSt.setSize(1000,700);
+        frameSt.setSize(1000, 700);
         frameSt.setResizable(false);
-        File[] files=new File("item_groups").listFiles();
-        frameSt.setLayout(new GridLayout(Objects.requireNonNull(files).length+1, 1));
-        for(File f: files){
-            double totalGr=0;
-            JPanel  group = new JPanel(new BorderLayout());
+        File[] files = new File("item_groups").listFiles();
+        frameSt.setLayout(new GridLayout(Objects.requireNonNull(files).length + 1, 1));
+        for (File f : files) {
+            double totalGr = 0;
+            JPanel group = new JPanel(new BorderLayout());
             JLabel name = new JLabel(f.getName());
             name.setHorizontalAlignment(JLabel.HORIZONTAL);
-            group.add(name,BorderLayout.NORTH);
+            group.add(name, BorderLayout.NORTH);
             System.out.println(f.getAbsolutePath());
-            ArrayList<Item> items= readJSON(f.getAbsolutePath());
+            ArrayList<Item> items = readJSON(f.getAbsolutePath());
             System.out.println(items);
             JPanel it = new JPanel(new GridLayout(items.size(), 2));
-            for(Item item: items){
+            for (Item item : items) {
                 it.add(item.getPanel());
-                double res = item.getPrice()*item.getAmount();
-                it.add(new JLabel(res+" $"));
-                totalGr+=res;
+                double res = item.getPrice() * item.getAmount();
+                it.add(new JLabel(res + " $"));
+                totalGr += res;
             }
-            group.add(it,BorderLayout.CENTER);
-            JLabel totGr=new JLabel("Загальна вартість продуктів у групі: "+totalGr+" $");
-            total+=totalGr;
+            group.add(it, BorderLayout.CENTER);
+            JLabel totGr = new JLabel("Загальна вартість продуктів у групі: " + totalGr + " $");
+            total += totalGr;
             totGr.setHorizontalAlignment(JLabel.HORIZONTAL);
-            group.add(totGr,BorderLayout.SOUTH);
+            group.add(totGr, BorderLayout.SOUTH);
             frameSt.add(group);
-            JLabel totalPrice= new JLabel("Сумарна вартість товарів на складі: "+total+" $");
+            JLabel totalPrice = new JLabel("Сумарна вартість товарів на складі: " + total + " $");
             totalPrice.setHorizontalAlignment(JLabel.HORIZONTAL);
             frameSt.add(totalPrice);
         }
