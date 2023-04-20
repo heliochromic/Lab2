@@ -379,6 +379,61 @@ public class Program extends JFrame {
 
 
 
+    private void statistic(ActionEvent e) {
+        double total = 0;
+        JFrame frameSt = new JFrame();
+        frameSt.setTitle("Statistic");
+        frameSt.setSize(1000, 700);
+        frameSt.setResizable(false);
+        JPanel contentPane = new JPanel(new GridLayout());
+        //  contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
+        JScrollPane scrollPane = new JScrollPane(contentPane);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        frameSt.setContentPane(scrollPane);
+        File[] files = new File("item_groups").listFiles();
+        for (File f : files) {
+
+            double totalGr = 0;
+            JPanel group = new JPanel(new BorderLayout());
+            //  group.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+            JLabel name = new JLabel(f.getName());
+            name.setHorizontalAlignment(JLabel.HORIZONTAL);
+            group.add(name, BorderLayout.NORTH);
+            System.out.println(f.getAbsolutePath());
+            ArrayList<Item> items = readJSON(f.getAbsolutePath());
+            System.out.println(items);
+            if(items.isEmpty()){
+                JLabel empty = new JLabel("група не має жодних товарів");
+                empty.setHorizontalAlignment(JLabel.HORIZONTAL);
+                group.add(empty, BorderLayout.CENTER);
+                contentPane.add(group);
+                continue;
+            }
+            JPanel it = new JPanel(new GridLayout(items.size(), 2));
+            for (Item item : items) {
+                JLabel itemOP=new JLabel("Назва товару: <"+item.getName() +"> Кількість : "+item.getAmount()+" Ціна за одиницю: "+item.getPrice()+" $");
+                itemOP.setPreferredSize(new Dimension(700, 20));
+                it.add(itemOP);
+                double res = item.getPrice() * item.getAmount();
+                JLabel sc=new JLabel("Всього : "+res + " $");
+                sc.setPreferredSize(new Dimension(300, 20));
+                it.add(sc);
+                totalGr += res;
+            }
+            group.add(it, BorderLayout.CENTER);
+            JLabel totGr = new JLabel("Загальна вартість продуктів у групі: " + totalGr + " $");
+            total += totalGr;
+            totGr.setHorizontalAlignment(JLabel.HORIZONTAL);
+            group.add(totGr, BorderLayout.SOUTH);
+            contentPane.add(group);
+            group.setPreferredSize(new Dimension(950, (items.size() * 60) + 70));
+        }
+        JLabel totalPrice = new JLabel("Сумарна вартість товарів на складі: " + total + " $");
+        totalPrice.setHorizontalAlignment(JLabel.HORIZONTAL);
+        totalPrice.setPreferredSize(new Dimension(950,20));
+        contentPane.add(totalPrice);
+        frameSt.setVisible(true);
+    }
     /*
 
     Місце для методів іри і не кроку вгору до мого коду
