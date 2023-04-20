@@ -346,7 +346,7 @@ public class Program extends JFrame {
         frameSt.setTitle("Statistic");
         frameSt.setSize(1000, 700);
         frameSt.setResizable(false);
-        JPanel contentPane = new JPanel(new GridLayout());
+        JPanel contentPane = new JPanel(new GridLayout(0,1));
         //  contentPane.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
         JScrollPane scrollPane = new JScrollPane(contentPane);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
